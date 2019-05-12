@@ -66,7 +66,26 @@ AC_PROG_INSTALL
 AM_PROG_LIBTOOL
 
 dnl test for --enable-warnings command line option
-AC_ARG_ENABLE( warnings, [  --enable-warnings       enable compiler warnings], AC_COMPILE_WARNINGS )
+AC_ARG_ENABLE(
+	warnings,
+	[  --enable-warnings            enable compiler warnings],
+	AC_COMPILE_WARNINGS
+)
+
+AC_ARG_WITH(
+	[gengen],
+	[  --with-gengen=mygengen       gengen to use],
+	[GENGEN_TO_USE=$withval],
+	[GENGEN_TO_USE=[gengen]]
+)
+AC_SUBST(GENGEN, $GENGEN_TO_USE)
+AC_ARG_WITH(
+	[gengetopt],
+	[  --with-gengetopt=mygengetopt gengetopt to use],
+	[GENGETOPT_TO_USE=$withval],
+	[GENGETOPT_TO_USE=[gengetopt]]
+)
+AC_SUBST(GENGETOPT, $GENGETOPT_TO_USE)
 
 dnl check for STL
 AC_CXX_HAVE_STL
@@ -122,10 +141,6 @@ dnl GNU source-highlight can be found at
 dnl http://www.gnu.org/software/src-highlite
 AC_PATH_PROGS(SOURCEHIGHLIGHT, source-highlight)
 
-dnl the following is a program for generating a program that
-dnl generates a source and substitutes some values
-AC_PATH_PROGS(GENGEN, gengen)
-
 dnl this is for testing purpose and development
 AC_PATH_PROGS(VALGRIND, valgrind)
 
@@ -136,7 +151,6 @@ AM_CONDITIONAL(NO_HELP2MAN, test -z "$ac_cv_path_HELP2MAN" )
 dnl AM_CONDITIONAL(NO_GETOPTLONG, test "$ac_cv_func_getopt_long" = no  )
 AM_CONDITIONAL(NO_STRDUP, test "$ac_cv_func_strdup" = no )
 AM_CONDITIONAL(NO_SOURCEHIGHLIGHT, test -z "$ac_cv_path_SOURCEHIGHLIGHT" )
-AM_CONDITIONAL(NO_GENGEN, test -z "$ac_cv_path_GENGEN" )
 dnl AM_CONDITIONAL(NO_SSTREAM, test -z "$ac_cv_cxx_have_sstream" )
 
 dnl we want to avoid tests in case we're crosscompiling

@@ -7,6 +7,11 @@ Please send gengetopt bug reports to bug-gengetopt at gnu.org
 For details about the new features, you can take a look at:
 http://tronprog.blogspot.com/search/label/gengetopt
 
+Version 2.23
+
+   * Gengen and gengetopt are required when building from git. When building
+     from tarball, everything works like it did before.
+
 Version 2.22.6
 
    * Fixed a compilation problem in Mac OS X

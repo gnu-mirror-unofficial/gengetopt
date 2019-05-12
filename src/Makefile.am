@@ -18,8 +18,6 @@
 
 SUBDIRS = skels tests
 
-#INCLUDES = -I@top_srcdir@/src/skels
-
 SUFFIXES = .text .c .ggo
 
 .text.o:
@@ -36,13 +34,11 @@ yyerror.cc gm_utils.cpp fileutils.cpp acceptedvalues.cpp ggos.cpp
 
 gengetopt_SOURCES = gengetopt.cc
 
-scanner.cc: $(srcdir)/scanner.ll
-	$(LEX) $(LFLAGS) -o $(srcdir)/scanner.cc $(srcdir)/scanner.ll
+scanner.cc: scanner.ll
+	$(LEX) $(LFLAGS) -o $@ $<
 
-parser.cc: $(srcdir)/parser.yy
-	$(YACC) -o $(srcdir)/parser.cc $(srcdir)/parser.yy --defines=$(srcdir)/parser.h
-
-#gengetopt_LDADD = @LIBOBJS@ @LEXLIB@ skels/libgen.a
+parser.cc: parser.yy
+	$(YACC) -o $@ $< --defines=$(@:.cc=.h)
 
 # these are for gnulib
 AM_CPPFLAGS = -I$(top_srcdir)/gl -I$(top_builddir)/gl
@@ -62,42 +58,23 @@ parser.yy scanner.ll \
 globals.h \
 $(pkgdata_DATA)
 
-# version of gengetopt linked to the ElectricFence library
-# don't use it anymore: use valgrind
-#EXTRA_PROGRAMS = gengetopt-efence
-#gengetopt_efence_SOURCES = $(gengetopt_SOURCES)
-#gengetopt_efence_LDADD = -lefence $(gengetopt_LDADD)
-
-PROGNAME = $(top_builddir)/src/gengetopt$(EXEEXT)
-
 # to have flex generate a case insensitive scanner
 AM_LFLAGS = -i
 
-# it may happen, usually if the sources have been downloaded from CVS
-# repository, that cmdline.ggo is more recent than cmdline.c, but
-# cmdline.c cannot be re-generated, even because gengetopt has
-# to be built first. For instance if you only change spaces in cmdline.ggo
-# cmdline.c will not be different, and thus it is not updated in the CVS
-# repository; then when you make a checkout on another place, make
-# would try to build cmdline.c, but to do this it would need gengetopt
-# which is not built yet; so we simply touch cmdline.c (and this is safe)
-
 .ggo.c:
-	if test -f $(PROGNAME); then \
-	$(PROGNAME) --input=$< --output-dir=$(srcdir) ; \
-	else touch $(srcdir)/$@ ; fi
+	$(GENGETOPT) --input $<
 
 cmdline.h: cmdline.c
+	@if test -f $@; then :; else \
+		rm -f -- $<; \
+		$(MAKE) $(AM_MAKEFLAGS) $<; \
+	fi
 
-BUILT_SOURCES = cmdline.h cmdline.c parser.cc scanner.cc
-
-# automatically generate gengetopt_strdup() from the replacement function
-# strdup().
-# gengetopt_strdup.text: strdup.c
-#	echo "/* gengetopt_strdup(): automatically generated from strdup.c. */" > $@
-#	cat strdup.c | sed -e 's/^strdup (/gengetopt_&/' \
-#               -e 's/^char \* *$$/&/' \
-#               -e '/^#include.*$$/D' -e '/^$$/D' >> $@
+BUILT_SOURCES = \
+	cmdline.h \
+	cmdline.c \
+	parser.cc \
+	scanner.cc
 
 # we distribute these files because who uses gengetopt might need them
 # these are installed in $(prefix)/share/gengetopt
@@ -110,6 +87,9 @@ pkgdata_DATA = gnugetopt.h getopt.c getopt1.c
 # so we explicitely declare them
 MAINTAINERCLEANFILES = scanner.cc parser.h parser.cc 
 
-noinst_HEADERS = acceptedvalues.h errorcodes.h fileutils.h \
-	gm_utils.h yyerror.h
-
+noinst_HEADERS = \
+	acceptedvalues.h \
+	errorcodes.h \
+	fileutils.h \
+	gm_utils.h \
+	yyerror.h
