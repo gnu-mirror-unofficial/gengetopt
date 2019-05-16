@@ -52,8 +52,6 @@ c_gens = $(skels:.h_skel=.cc)
 		$(MAKE) $(AM_MAKEFLAGS) $<; \
 	fi
 
-INCLUDES = -I@top_srcdir@/src
-
 noinst_LTLIBRARIES = libgen.la
 
 libgen_la_SOURCES = $(BUILT_SOURCES)
