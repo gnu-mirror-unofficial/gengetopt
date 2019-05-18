@@ -21,7 +21,7 @@
 static struct gengetopt_args_info args_info;
 
 int
-main (int argc, char **argv)
+main (void)
 {
   unsigned int i = 0;
   char *my_argv[6];
