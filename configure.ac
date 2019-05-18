@@ -208,6 +208,7 @@ AC_CONFIG_FILES([tests/test_show_help.sh], [chmod +x tests/test_show_help.sh])
 AC_CONFIG_FILES([tests/test_err.sh], [chmod +x tests/test_err.sh])
 AC_CONFIG_FILES([tests/test_dep.sh], [chmod +x tests/test_dep.sh])
 AC_CONFIG_FILES([tests/test_manual_help.sh], [chmod +x tests/test_manual_help.sh])
+AC_CONFIG_FILES([tests/test_manual_help_args.sh], [chmod +x tests/test_manual_help_args.sh])
 AC_CONFIG_FILES([tests/test_multiple_parsers.sh], [chmod +x tests/test_multiple_parsers.sh])
 
 AC_OUTPUT

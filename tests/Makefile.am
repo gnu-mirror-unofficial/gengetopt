@@ -102,6 +102,7 @@ test_default_values.sh \
 test_values.sh test_values_err.sh \
 test_dep.sh \
 test_manual_help.sh \
+test_manual_help_args.sh \
 test_multiple_parsers.sh \
 test_sections_option_help \
 test_all_opts_option_help \
@@ -135,6 +136,7 @@ test_sections \
 test_values test_values_cc \
 test_redef_help \
 test_manual_help \
+test_manual_help_args \
 test_no_handle_help \
 test_multiple_parsers \
 test_sections_option_help \
@@ -215,7 +217,7 @@ test_values_SOURCES = test_values_cmd.ggo test_values.c
 test_values_cc_SOURCES = test_values_cmd_cc.cc test_values_cc.cc
 test_redef_help_SOURCES = test_redef_help_cmd.ggo test_redef_help.c
 test_manual_help_SOURCES = test_manual_help_cmd.ggo test_manual_help.c
-test_manual_help_args_SOURCES = test_manual_help_args_cmd.ggo
+test_manual_help_args_SOURCES = test_manual_help_args_cmd.ggo test_manual_help_args.c
 test_no_handle_help_SOURCES = test_no_handle_help_cmd.ggo test_no_handle_help.c
 test_multiple_parsers_SOURCES = test_main_cmdline_cmd.ggo test_first_cmdline_cmd.ggostr test_second_cmdline_cmd.ggostr test_multiple_parsers.c
 test_sections_option_help_SOURCES = test_sections_cmd.ggo test_sections_option_help.c
@@ -331,7 +333,8 @@ test_conf_parser_ov2.c.in test_conf_parser_ov3.c.in \
 test_conf_parser_ov4.c.in \
 test_values.sh.in test_values_err.sh.in test_show_help.sh.in \
 valgrind_tests.sh.in valgrind_suppressions.sh.in test_err.sh.in \
-test_dep.sh.in test_manual_help.sh.in test_multiple_parsers.sh.in \
+test_dep.sh.in test_manual_help.sh.in test_manual_help_args.sh.in \
+test_multiple_parsers.sh.in \
 $(GENERATED_TESTS) \
 $(TESTSOUTPUT) \
 $(gengetoptexamples_DATA) \
