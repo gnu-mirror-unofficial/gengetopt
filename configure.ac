@@ -146,7 +146,6 @@ AC_PATH_PROGS(VALGRIND, valgrind)
 
 dnl this is only for developers who use change command line options
 AC_PATH_PROGS(HELP2MAN, help2man)
-AM_CONDITIONAL(NO_HELP2MAN, test -z "$ac_cv_path_HELP2MAN" )
 
 dnl AM_CONDITIONAL(NO_GETOPTLONG, test "$ac_cv_func_getopt_long" = no  )
 AM_CONDITIONAL(NO_STRDUP, test "$ac_cv_func_strdup" = no )

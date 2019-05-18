@@ -27,13 +27,8 @@ LIBS =
 # man page
 man_MANS = gengetopt.1
 
-if NO_HELP2MAN
-gengetopt.1: $(top_srcdir)/src/cmdline.ggo
-	touch $@
-else
 gengetopt.1: $(top_srcdir)/src/cmdline.ggo
 	$(HELP2MAN) $(PROGNAME) --help-option="--detailed-help" > $@
-endif
 
 
 EXTRA_PROGRAMS = sample1 sample2
@@ -55,88 +50,88 @@ AM_MAKEINFOHTMLFLAGS=--no-split
 # for including generated texinfo files
 AM_MAKEINFOFLAGS=-I$(srcdir)
 
-info_TEXINFOS = gengetopt.texinfo
+info_TEXINFOS = gengetopt.texi
 
-$(srcdir)/gengetopt.texinfo: $(GENERATEDINFOS)
+$(srcdir)/gengetopt.texi: $(GENERATEDINFOS)
 #gengetopt_TEXINFOS = $(GENERATEDINFOS)
 
-GENERATEDINFOS = cmdline1.h.texinfo main1.cc.texinfo \
-test_conf_parser.c.texinfo \
-test_conf_parser_ov2.c.texinfo help_output.texinfo \
-multiple_example.c.texinfo \
-test_multiple_parsers.c.texinfo \
-sample1.ggo.texinfo sample1.output.texinfo sample1_2.output.texinfo \
-test_modes_cmd.ggo.texinfo \
-help_modes.output.texinfo
+GENERATEDINFOS = cmdline1.h.texi main1.cc.texi \
+test_conf_parser.c.texi \
+test_conf_parser_ov2.c.texi help_output.texi \
+multiple_example.c.texi \
+test_multiple_parsers.c.texi \
+sample1.ggo.texi sample1.output.texi sample1_2.output.texi \
+test_modes_cmd.ggo.texi \
+help_modes.output.texi
 
 BUILT_SOURCES = $(GENERATEDINFOS)
 
 RUNSOURCEHIGHLIGHT=$(SOURCEHIGHLIGHT) -f texinfo --style-file=texinfo.style --output-dir=$(top_builddir)/doc/
 
-SUFFIXES = .h.texinfo .cc.texinfo .c.texinfo .ggo.texinfo .ggo
+SUFFIXES = .h.texi .cc.texi .c.texi .ggo.texi .ggo
 
 if NO_SOURCEHIGHLIGHT
-.h.h.texinfo:
+.h.h.texi:
 	touch $@
 
-.cc.cc.texinfo:
+.cc.cc.texi:
 	touch $@
 
-test_conf_parser.c.texinfo: $(top_srcdir)/tests/test_conf_parser.c
+test_conf_parser.c.texi: $(top_srcdir)/tests/test_conf_parser.c
 	touch $@
 
-test_conf_parser_ov2.c.texinfo: $(top_builddir)/tests/test_conf_parser_ov2.c
+test_conf_parser_ov2.c.texi: $(top_builddir)/tests/test_conf_parser_ov2.c
 	touch $@
 
-test_multiple_parsers.c.texinfo: $(top_srcdir)/tests/test_multiple_parsers.c
+test_multiple_parsers.c.texi: $(top_srcdir)/tests/test_multiple_parsers.c
 	touch $@
 
-test_modes_cmd.ggo.texinfo: $(top_srcdir)/tests/test_modes_cmd.ggo
+test_modes_cmd.ggo.texi: $(top_srcdir)/tests/test_modes_cmd.ggo
 	touch $@
 
-.c.c.texinfo:
+.c.c.texi:
 	touch $@
 
-.ggo.ggo.texinfo:
+.ggo.ggo.texi:
 	cat $< | sed -f $(srcdir)/input.sed > $@
 
 else
-.h.h.texinfo:
+.h.h.texi:
 	$(RUNSOURCEHIGHLIGHT) $< 
 
-.cc.cc.texinfo:
+.cc.cc.texi:
 	$(RUNSOURCEHIGHLIGHT) $< 
 
-test_conf_parser.c.texinfo: $(top_srcdir)/tests/test_conf_parser.c
+test_conf_parser.c.texi: $(top_srcdir)/tests/test_conf_parser.c
 	$(RUNSOURCEHIGHLIGHT) $(top_srcdir)/tests/test_conf_parser.c 
 
-test_conf_parser_ov2.c.texinfo: $(top_builddir)/tests/test_conf_parser_ov2.c
+test_conf_parser_ov2.c.texi: $(top_builddir)/tests/test_conf_parser_ov2.c
 	$(RUNSOURCEHIGHLIGHT) $(top_builddir)/tests/test_conf_parser_ov2.c
 
-test_multiple_parsers.c.texinfo: $(top_srcdir)/tests/test_multiple_parsers.c
+test_multiple_parsers.c.texi: $(top_srcdir)/tests/test_multiple_parsers.c
 	$(RUNSOURCEHIGHLIGHT) $(top_srcdir)/tests/test_multiple_parsers.c
 
-.c.c.texinfo:
+.c.c.texi:
 	$(RUNSOURCEHIGHLIGHT) $< 
 
-test_modes_cmd.ggo.texinfo: $(top_srcdir)/tests/test_modes_cmd.ggo
+test_modes_cmd.ggo.texi: $(top_srcdir)/tests/test_modes_cmd.ggo
 	$(RUNSOURCEHIGHLIGHT) $(top_srcdir)/tests/test_modes_cmd.ggo --failsafe
 
-.ggo.ggo.texinfo:
+.ggo.ggo.texi:
 	$(RUNSOURCEHIGHLIGHT) $< --failsafe
 endif
 
-help_output.texinfo: $(top_srcdir)/src/cmdline.ggo
+help_output.texi: $(top_srcdir)/src/cmdline.ggo
 	$(PROGNAME) --show-help -i $(top_srcdir)/src/cmdline.ggo --set-package="gengetopt" --set-version="" > $@
 
-help_modes.output.texinfo: $(top_srcdir)/tests/test_modes_cmd.ggo
+help_modes.output.texi: $(top_srcdir)/tests/test_modes_cmd.ggo
 	$(PROGNAME) --show-help --long-help -i $(top_srcdir)/tests/test_modes_cmd.ggo > $@
 
-sample1.output.texinfo: sample1.ggo
+sample1.output.texi: sample1.ggo
 	$(MAKE) $(AM_MAKEFLAGS) sample1$(EXEEXT)
 	./sample1$(EXEEXT) --help | sed -f $(srcdir)/input.sed > $@
 
-sample1_2.output.texinfo: sample1.ggo
+sample1_2.output.texi: sample1.ggo
 	$(MAKE) $(AM_MAKEFLAGS) sample1$(EXEEXT)
 	./sample1$(EXEEXT) --detailed-help | sed -f $(srcdir)/input.sed > $@
 
