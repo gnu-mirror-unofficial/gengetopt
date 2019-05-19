@@ -146,6 +146,14 @@ tabs [\t]+
 
 %%
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-function"
+static void suppress_unused_function_warning_for_yy_top_state(void)
+{
+	(void)yy_top_state;
+}
+#pragma GCC diagnostic pop
+
 /*
   Otherwise '\n' within a TOK_MLSTRING would not be counted
 */

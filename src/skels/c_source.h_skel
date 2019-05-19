@@ -908,6 +908,11 @@ int update_arg(void *field, char **orig_field,
   default:
     ;
   };
+@ELSE@
+	FIX_UNUSED(stop_char);
+	@IF@ not (has_arg_enum or has_arg_string) @THEN@
+		FIX_UNUSED(val);
+	@ENDIF@
 @ENDIF@
 
   /* store the original value */
@@ -1256,10 +1261,16 @@ int
   
   package_name = argv[0];
   
+  /* TODO: Why is this here? It is not used anywhere. */
   override = params->override;
+  FIX_UNUSED(override);
+
   initialize = params->initialize;
   check_required = params->check_required;
+
+  /* TODO: Why is this here? It is not used anywhere. */
   check_ambiguity = params->check_ambiguity;
+  FIX_UNUSED(check_ambiguity);
 
   if (initialize)
     @parser_name@_init (args_info);
@@ -1327,6 +1338,8 @@ int
     {
       error_occurred += @parser_name@_required2 (args_info, argv[0], additional_error);
     }
+@ELSE@
+	FIX_UNUSED(check_required);
 @ENDIF@
 
   @parser_name@_release (&local_args_info);
