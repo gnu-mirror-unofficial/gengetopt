@@ -1,3 +1,7 @@
+2019-05-22  Tomas Volf <wolf@wolfsden.cz>
+
+	* configure.ac: remove unused conditionals, general clean up
+
 2019-05-05  Tomas Volf <wolf@wolfsden.cz>
 
 	* src/skels: gengen is now required to build from git

@@ -11,6 +11,7 @@ Version 2.23
 
    * Gengen and gengetopt are required when building from git. When building
      from tarball, everything works like it did before.
+   * Drop IRIX compatibility
 
 Version 2.22.6
 
