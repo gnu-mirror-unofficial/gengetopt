@@ -72,66 +72,31 @@ GENERATEDINFOS = \
 gengetopt_TEXINFOS = $(GENERATEDINFOS)
 BUILT_SOURCES = $(GENERATEDINFOS)
 
-RUNSOURCEHIGHLIGHT=$(SOURCEHIGHLIGHT) \
-	-f texinfo \
-	--style-file=texinfo.style \
-	--output-dir=$(top_builddir)/doc/
-
 SUFFIXES = .h.texi .cc.texi .c.texi .ggo.texi .ggo
 
-if NO_SOURCEHIGHLIGHT
-
 .h.h.texi:
-	touch $@
+	cat $< | sed -f $(srcdir)/input.sed > $@
 
 .cc.cc.texi:
-	touch $@
+	cat $< | sed -f $(srcdir)/input.sed > $@
 
 test_conf_parser.c.texi: $(top_srcdir)/tests/test_conf_parser.c
-	touch $@
+	cat $< | sed -f $(srcdir)/input.sed > $@
 
 test_conf_parser_ov2.c.texi: $(top_builddir)/tests/test_conf_parser_ov2.c
-	touch $@
+	cat $< | sed -f $(srcdir)/input.sed > $@
 
 test_multiple_parsers.c.texi: $(top_srcdir)/tests/test_multiple_parsers.c
-	touch $@
+	cat $< | sed -f $(srcdir)/input.sed > $@
 
 test_modes_cmd.ggo.texi: $(top_srcdir)/tests/test_modes_cmd.ggo
-	touch $@
+	cat $< | sed -f $(srcdir)/input.sed > $@
 
 .c.c.texi:
-	touch $@
+	cat $< | sed -f $(srcdir)/input.sed > $@
 
 .ggo.ggo.texi:
 	cat $< | sed -f $(srcdir)/input.sed > $@
-
-else
-
-.h.h.texi:
-	$(RUNSOURCEHIGHLIGHT) $< 
-
-.cc.cc.texi:
-	$(RUNSOURCEHIGHLIGHT) $< 
-
-test_conf_parser.c.texi: $(top_srcdir)/tests/test_conf_parser.c
-	$(RUNSOURCEHIGHLIGHT) $<
-
-test_conf_parser_ov2.c.texi: $(top_builddir)/tests/test_conf_parser_ov2.c
-	$(RUNSOURCEHIGHLIGHT) $<
-
-test_multiple_parsers.c.texi: $(top_srcdir)/tests/test_multiple_parsers.c
-	$(RUNSOURCEHIGHLIGHT) $<
-
-.c.c.texi:
-	$(RUNSOURCEHIGHLIGHT) $< 
-
-test_modes_cmd.ggo.texi: $(top_srcdir)/tests/test_modes_cmd.ggo
-	$(RUNSOURCEHIGHLIGHT) $<
-
-.ggo.ggo.texi:
-	$(RUNSOURCEHIGHLIGHT) $< --failsafe
-
-endif
 
 help_output.texi: $(top_srcdir)/src/cmdline.ggo
 	$(PROGNAME) --show-help --set-package="gengetopt" \

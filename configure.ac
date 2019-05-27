@@ -101,18 +101,11 @@ gl_INIT
 
 AC_PATH_PROGS(TAR, tar gtar)
 
-dnl this is only for highlighting source for documentation
-dnl GNU source-highlight can be found at
-dnl http://www.gnu.org/software/src-highlite
-AC_PATH_PROGS(SOURCEHIGHLIGHT, source-highlight)
-
 dnl this is for testing purpose and development
 AC_PATH_PROGS(VALGRIND, valgrind)
 
 dnl this is only for developers who use change command line options
 AC_PATH_PROGS(HELP2MAN, help2man)
-
-AM_CONDITIONAL(NO_SOURCEHIGHLIGHT, test -z "$ac_cv_path_SOURCEHIGHLIGHT" )
 
 dnl we want to avoid tests in case we're crosscompiling
 dnl since we would not be able to run the gengetopt executable in that case
