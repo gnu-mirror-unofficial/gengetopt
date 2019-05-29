@@ -27,10 +27,18 @@ bin_PROGRAMS = gengetopt
 
 noinst_LTLIBRARIES = libgengetopt.la
 
-libgengetopt_la_SOURCES = parser.cc scanner.cc \
-globals.cpp \
-argsdef.c cmdline.ggo gm.cc \
-yyerror.cc gm_utils.cpp fileutils.cpp acceptedvalues.cpp ggos.cpp
+libgengetopt_la_SOURCES = \
+	acceptedvalues.cpp \
+	argsdef.c \
+	cmdline.ggo \
+	fileutils.cpp \
+	ggos.cpp \
+	globals.cpp \
+	gm.cc \
+	gm_utils.cpp \
+	parser.cc \
+	scanner.cc \
+	yyerror.cc
 
 gengetopt_SOURCES = gengetopt.cc
 
@@ -43,20 +51,29 @@ parser.cc: parser.yy
 # these are for gnulib
 AM_CPPFLAGS = -I$(top_srcdir)/gl -I$(top_builddir)/gl
 
-libgengetopt_la_LIBADD = $(top_builddir)/gl/libgnu.la \
+libgengetopt_la_LIBADD = \
+	$(top_builddir)/gl/libgnu.la \
 	@LTLIBOBJS@ \
 	skels/libgen.la
 
 LDADD = libgengetopt.la
 
-EXTRA_DIST = parser.h argsdef.h gengetopt.h ggos.h gm.h gnugetopt.h \
-cmdline.c cmdline.h \
-global_opts.h \
-ggo_options.h \
-groups.h \
-parser.yy scanner.ll \
-globals.h \
-$(pkgdata_DATA)
+EXTRA_DIST = \
+	$(pkgdata_DATA) \
+	argsdef.h \
+	cmdline.c \
+	cmdline.h \
+	gengetopt.h \
+	ggo_options.h \
+	ggos.h \
+	global_opts.h \
+	globals.h \
+	gm.h \
+	gnugetopt.h \
+	groups.h \
+	parser.h \
+	parser.yy \
+	scanner.ll
 
 # to have flex generate a case insensitive scanner
 AM_LFLAGS = -i
@@ -71,8 +88,8 @@ cmdline.h: cmdline.c
 	fi
 
 BUILT_SOURCES = \
-	cmdline.h \
 	cmdline.c \
+	cmdline.h \
 	parser.cc \
 	scanner.cc
 
