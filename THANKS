@@ -1,10 +1,10 @@
 gengetopt THANKS file
 
-gengetopt has originally been written by Roberto Arturo Tena Sanchez,
-and it is currently maintained by Lorenzo Bettini.
-Many people have further contributed to gengetopt by reporting problems,
-suggesting various improvements, or submitting actual code. Here is
-a list of these people. Help me keep it complete and exempt of errors.
+gengetopt has originally been written by Roberto Arturo Tena Sanchez, and it is
+currently maintained by Tomas Volf. Thanks to Lorenzo Bettini for being previous
+maintainer. Many people have further contributed to gengetopt by reporting
+problems, suggesting various improvements, or submitting actual code. Here is a
+list of these people. Help me keep it complete and exempt of errors.
 
 Ben Asselstine
 Lorenzo Bettini
@@ -85,3 +85,5 @@ Yegor Yefremov
 James R. Van Zandt
 Ralf Zeise
 Richard Zidlicky
+
+// vim: set ft=texinfo noet ts=8 sts=8 sw=8 tw=80 nojs spell :

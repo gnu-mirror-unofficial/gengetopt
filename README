@@ -30,7 +30,7 @@ Generated code works if you use /GNU Autoconf/ or /GNU Automake/ .
 
 Gengetopt has originally been written by *Roberto Arturo Tena Sanchez*
 <arturo@directmail.org <mailto:arturo@directmail.org>>, and currently
-maintained by *Lorenzo Bettini* http://www.lorenzobettini.it .
+maintained by *Tomas Volf* <wolf@wolfsden.cz> .
 
 Gengetopt is a GNU <http://www.gnu.org> program and its main home page
 is at GNU site:
@@ -62,11 +62,10 @@ dismissed in favor of Git (http://git-scm.com/).
 
 
 
-*Lorenzo Bettini*
-http://www.lorenzobettini.it
+*Tomas Volf*
+https://wolfsden.cz
 
 gengetopt is free software. See the file LICENSE and COPYING for copying
 conditions. Anyway we won't get offended if you send us a postcard :-)
 
-C/C++ files are formatted with /GNU Source-highlight/
-(http://www.gnu.org/software/src-highlite/ ) by Lorenzo Bettini.
+// vim: set ft=texinfo noet ts=8 sts=8 sw=8 tw=80 nojs spell :

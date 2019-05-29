@@ -21,9 +21,6 @@ MAKE_SAMPLES = $(MAKE) $(AM_MAKEFLAGS) $(EXTRA_PROGRAMS)
 SAMPLES_STAMP = samples.stamp
 GGO_FILES = $(srcdir)/sample1.ggo $(srcdir)/sample2.ggo 
 
-# we don't have to link to anything
-LIBS =
-
 # man page
 man_MANS = gengetopt.1
 
@@ -42,90 +39,72 @@ LDADD = $(top_builddir)/gl/libgnu.la
 
 gengetoptdoc_DATA = gengetopt.html index.html 
 
-gengetoptexamples_DATA = sample1.ggo sample2.ggo main1.cc main2.c \
-                         cmdline1.c cmdline1.h cmdline2.c cmdline2.h \
-README.example
+gengetoptexamples_DATA = \
+	README.example \
+	cmdline1.c \
+	cmdline1.h \
+	cmdline2.c \
+	cmdline2.h \
+	main1.cc \
+	main2.c \
+	sample1.ggo \
+	sample2.ggo
 
 AM_MAKEINFOHTMLFLAGS=--no-split
 # for including generated texinfo files
-AM_MAKEINFOFLAGS=-I$(srcdir)
 
-info_TEXINFOS = gengetopt.texi
+info_TEXINFOS = gengetopt.texi index.texi
 
-$(srcdir)/gengetopt.texi: $(GENERATEDINFOS)
-#gengetopt_TEXINFOS = $(GENERATEDINFOS)
+GENERATEDINFOS = \
+	cmdline1.h.texi \
+	help_modes.output.texi \
+	help_output.texi \
+	main1.cc.texi \
+	multiple_example.c.texi \
+	sample1.ggo.texi \
+	sample1.output.texi \
+	sample1_2.output.texi \
+	test_conf_parser.c.texi \
+	test_conf_parser_ov2.c.texi \
+	test_modes_cmd.ggo.texi \
+	test_multiple_parsers.c.texi
 
-GENERATEDINFOS = cmdline1.h.texi main1.cc.texi \
-test_conf_parser.c.texi \
-test_conf_parser_ov2.c.texi help_output.texi \
-multiple_example.c.texi \
-test_multiple_parsers.c.texi \
-sample1.ggo.texi sample1.output.texi sample1_2.output.texi \
-test_modes_cmd.ggo.texi \
-help_modes.output.texi
-
+gengetopt_TEXINFOS = $(GENERATEDINFOS)
 BUILT_SOURCES = $(GENERATEDINFOS)
-
-RUNSOURCEHIGHLIGHT=$(SOURCEHIGHLIGHT) -f texinfo --style-file=texinfo.style --output-dir=$(top_builddir)/doc/
 
 SUFFIXES = .h.texi .cc.texi .c.texi .ggo.texi .ggo
 
-if NO_SOURCEHIGHLIGHT
 .h.h.texi:
-	touch $@
+	cat $< | sed -f $(srcdir)/input.sed > $@
 
 .cc.cc.texi:
-	touch $@
+	cat $< | sed -f $(srcdir)/input.sed > $@
 
 test_conf_parser.c.texi: $(top_srcdir)/tests/test_conf_parser.c
-	touch $@
+	cat $< | sed -f $(srcdir)/input.sed > $@
 
 test_conf_parser_ov2.c.texi: $(top_builddir)/tests/test_conf_parser_ov2.c
-	touch $@
+	cat $< | sed -f $(srcdir)/input.sed > $@
 
 test_multiple_parsers.c.texi: $(top_srcdir)/tests/test_multiple_parsers.c
-	touch $@
+	cat $< | sed -f $(srcdir)/input.sed > $@
 
 test_modes_cmd.ggo.texi: $(top_srcdir)/tests/test_modes_cmd.ggo
-	touch $@
+	cat $< | sed -f $(srcdir)/input.sed > $@
 
 .c.c.texi:
-	touch $@
+	cat $< | sed -f $(srcdir)/input.sed > $@
 
 .ggo.ggo.texi:
 	cat $< | sed -f $(srcdir)/input.sed > $@
 
-else
-.h.h.texi:
-	$(RUNSOURCEHIGHLIGHT) $< 
-
-.cc.cc.texi:
-	$(RUNSOURCEHIGHLIGHT) $< 
-
-test_conf_parser.c.texi: $(top_srcdir)/tests/test_conf_parser.c
-	$(RUNSOURCEHIGHLIGHT) $(top_srcdir)/tests/test_conf_parser.c 
-
-test_conf_parser_ov2.c.texi: $(top_builddir)/tests/test_conf_parser_ov2.c
-	$(RUNSOURCEHIGHLIGHT) $(top_builddir)/tests/test_conf_parser_ov2.c
-
-test_multiple_parsers.c.texi: $(top_srcdir)/tests/test_multiple_parsers.c
-	$(RUNSOURCEHIGHLIGHT) $(top_srcdir)/tests/test_multiple_parsers.c
-
-.c.c.texi:
-	$(RUNSOURCEHIGHLIGHT) $< 
-
-test_modes_cmd.ggo.texi: $(top_srcdir)/tests/test_modes_cmd.ggo
-	$(RUNSOURCEHIGHLIGHT) $(top_srcdir)/tests/test_modes_cmd.ggo --failsafe
-
-.ggo.ggo.texi:
-	$(RUNSOURCEHIGHLIGHT) $< --failsafe
-endif
-
 help_output.texi: $(top_srcdir)/src/cmdline.ggo
-	$(PROGNAME) --show-help -i $(top_srcdir)/src/cmdline.ggo --set-package="gengetopt" --set-version="" > $@
+	$(PROGNAME) --show-help --set-package="gengetopt" \
+		-i $(top_srcdir)/src/cmdline.ggo --set-version="" > $@
 
 help_modes.output.texi: $(top_srcdir)/tests/test_modes_cmd.ggo
-	$(PROGNAME) --show-help --long-help -i $(top_srcdir)/tests/test_modes_cmd.ggo > $@
+	$(PROGNAME) --show-help --long-help \
+		-i $(top_srcdir)/tests/test_modes_cmd.ggo > $@
 
 sample1.output.texi: sample1.ggo
 	$(MAKE) $(AM_MAKEFLAGS) sample1$(EXEEXT)
@@ -135,28 +114,38 @@ sample1_2.output.texi: sample1.ggo
 	$(MAKE) $(AM_MAKEFLAGS) sample1$(EXEEXT)
 	./sample1$(EXEEXT) --detailed-help | sed -f $(srcdir)/input.sed > $@
 
-EXTRA_DIST = sample1.ggo sample2.ggo samples.stamp \
-             cmdline1.c cmdline1.h cmdline2.c cmdline2.h \
-             $(man_MANS) $(gengetoptdoc_DATA) \
-             testdata \
-             $(GENERATEDINFOS) \
-             input.sed \
-             multiple_example.c \
-             README.example
+EXTRA_DIST = \
+	$(GENERATEDINFOS) \
+	$(gengetoptdoc_DATA) \
+	$(man_MANS) \
+	README.example \
+	cmdline1.c \
+	cmdline1.h \
+	cmdline2.c \
+	cmdline2.h \
+	input.sed \
+	multiple_example.c \
+	sample1.ggo \
+	sample2.ggo \
+	samples.stamp \
+	testdata
 
 cmdline1.h: cmdline1.c
 cmdline1.c: sample1.ggo
-	$(PROGNAME) -i $(srcdir)/sample1.ggo -Fcmdline1 --long-help -u --show-required
+	$(PROGNAME) -Fcmdline1 --long-help -u --show-required \
+		-i $(srcdir)/sample1.ggo
 
 cmdline2.h: cmdline2.c
 cmdline2.c: sample2.ggo
-	$(PROGNAME) --input=$(srcdir)/sample2.ggo --func-name=my_cmdline_parser --file-name=cmdline2 --unamed-opts --no-handle-help --no-handle-version
-
-#cmdline1.o: cmdline1.c
-#	$(CC) $(DEFS) $(CFLAGS) $(DEFAULT_INCLUDES) $(INCLUDES) -c cmdline1.c
+	$(PROGNAME) --input=$(srcdir)/sample2.ggo \
+		--func-name=my_cmdline_parser --file-name=cmdline2 \
+		--unamed-opts --no-handle-help --no-handle-version
 
 cmdline2.o: cmdline2.c
-	$(COMPILE) -DMY_CMDLINE_PARSER_PACKAGE=\"sample2\" -DMY_CMDLINE_PARSER_VERSION=\"2.0\" -c cmdline2.c
+	$(COMPILE) \
+		-DMY_CMDLINE_PARSER_PACKAGE=\"sample2\" \
+		-DMY_CMDLINE_PARSER_VERSION=\"2.0\" \
+		-c cmdline2.c
 
 # session for tests
 RUN_SAMPLE1 = ./sample1$(EXEEXT) -i 10 --flag-opt cmdline?.c
@@ -197,19 +186,28 @@ endif
 # this is for development only.
 samples: $(SAMPLES_STAMP)
 	$(MAKE) $(AM_MAKEFLAGS) $(EXTRA_PROGRAMS)
-#	echo timestamp > $(SAMPLES_STAMP)
 
 $(SAMPLES_STAMP): $(PROGNAME)
 	touch $(GGO_FILES)
 	echo timestamp > $(SAMPLES_STAMP)
 
 clean_gen:
-	rm -f $(GENERATEDINFOS)
+	rm -f -- $(GENERATEDINFOS)
 
 CLEANFILES = $(EXTRA_PROGRAMS)
 
-DISTCLEANFILES = cmdline1.h cmdline1.c cmdline2.h \
-cmdline2.c test.out samples.stamp $(BUILT_SOURCES)
+DISTCLEANFILES = \
+	$(BUILT_SOURCES) \
+	cmdline1.c \
+	cmdline1.h \
+	cmdline2.c \
+	cmdline2.h \
+	samples.stamp \
+	test.out
 
-MAINTAINERCLEANFILES = cmdline1.c cmdline2.c cmdline1.h cmdline2.h \
-                       $(SAMPLES_STAMP)
+MAINTAINERCLEANFILES = \
+	$(SAMPLES_STAMP) \
+	cmdline1.c \
+	cmdline1.h \
+	cmdline2.c \
+	cmdline2.h

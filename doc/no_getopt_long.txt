@@ -49,5 +49,3 @@ they both use the techniques described here.
 I hope you find this document useful :-)
 
 Happy Coding!
-
-      Lorenzo Bettini www.lorenzobettini.it
