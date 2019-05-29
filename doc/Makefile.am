@@ -169,7 +169,7 @@ check-am: testdata
 	$(RUN_SAMPLE2_1) >> test.out 
 	$(RUN_SAMPLE2_2) >> test.out 
 	@echo expect no output from diff
-	diff $(srcdir)/testdata test.out
+	diff --unified $(srcdir)/testdata test.out
 
 testdata:
 	rm -f testdata

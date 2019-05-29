@@ -178,19 +178,24 @@ void
     printf("\n%s\n", @args_info@_versiontext);
 }
 
-static void print_help_common(void) {
-  @parser_name@_print_version ();
+static void print_help_common(void)
+{
+	size_t len_purpose = strlen(@args_info@_purpose);
+	size_t len_usage = strlen(@args_info@_usage);
 
-  if (strlen(@args_info@_purpose) > 0)
-    printf("\n%s\n", @args_info@_purpose);
+	if (len_purpose > 0) {
+		printf("%s\n", @args_info@_purpose);
+	}
 
-  if (strlen(@args_info@_usage) > 0)
-    printf("\n%s\n", @args_info@_usage);
+	if (len_usage > 0) {
+		printf("%s%s\n", len_purpose ? "\n" : "", @args_info@_usage);
+	}
 
-  printf("\n");
+	printf("\n");
 
-  if (strlen(@args_info@_description) > 0)
-    printf("%s\n\n", @args_info@_description);
+	if (strlen(@args_info@_description) > 0) {
+		printf("%s\n\n", @args_info@_description);
+	}
 }
 
 void
@@ -1703,3 +1708,4 @@ int
 }
 
 @ENDIF@
+/* vim: set ft=c noet ts=8 sts=8 sw=8 tw=80 nojs spell : */

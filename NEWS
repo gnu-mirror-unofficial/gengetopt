@@ -4,14 +4,13 @@ Copyright (C) 1999-2011  Free Software Foundation
 
 Please send gengetopt bug reports to bug-gengetopt at gnu.org
 
-For details about the new features, you can take a look at:
-http://tronprog.blogspot.com/search/label/gengetopt
-
 Version 2.23
 
    * Gengen and gengetopt are required when building from git. When building
      from tarball, everything works like it did before.
    * Drop IRIX compatibility
+   * To mimic behaviour of coreutils, version string is no longer part of
+     --help (bug #34400)
 
 Version 2.22.6
 
@@ -302,3 +301,5 @@ Copying information:
 
 This file is licensed to you under the license specified in the included file
 `LICENSE'. Look there for further details.
+
+// vim: set ft= noet ts=8 sts=8 sw=8 tw=80 nojs spell :
