@@ -31,7 +31,7 @@ main (void)
   my_argv[1] = my_argv[0];
   my_argv[2] = "-r";
   my_argv[3] = "foo";
-  my_argv[4] = "unamed";
+  my_argv[4] = "unnamed";
   my_argv[5] = 0;
 
   if (test_all_opts_cmd_parser (5, my_argv, &args_info) != 0)

@@ -242,6 +242,14 @@ AC_CONFIG_FILES(
 	[chmod +x tests/test_simple_multiple_default.sh]
 )
 AC_CONFIG_FILES(
+	[tests/test_unamed.sh],
+	[chmod +x tests/test_unamed.sh]
+)
+AC_CONFIG_FILES(
+	[tests/test_unnamed.sh],
+	[chmod +x tests/test_unnamed.sh]
+)
+AC_CONFIG_FILES(
 	[tests/test_values.sh],
 	[chmod +x tests/test_values.sh]
 )

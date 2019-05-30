@@ -236,7 +236,7 @@ void
   clear_given (args_info);
   clear_args (args_info);
   init_args_info (args_info);
-@IF@ handle_unamed @THEN@
+@IF@ handle_unnamed @THEN@
 
   args_info->inputs = 0;
   args_info->inputs_num = 0;
@@ -374,12 +374,12 @@ free_multiple_string_field(unsigned int len, char ***arg, char ***orig)
 static void
 @parser_name@_release (struct @args_info@ *args_info)
 {
-@IF@ handle_unamed @THEN@
+@IF@ handle_unnamed @THEN@
   unsigned int i;@ENDIF@
 
   @free:method@
   
-@IF@ handle_unamed @THEN@
+@IF@ handle_unnamed @THEN@
   for (i = 0; i < args_info->inputs_num; ++i)
     free (args_info->inputs [i]);
 
@@ -1353,7 +1353,7 @@ int
   if ( error_occurred )
     return (EXIT_FAILURE);
 
-@IF@ handle_unamed @THEN@
+@IF@ handle_unnamed @THEN@
   if (optind < argc)
     {
       int i = 0 ;

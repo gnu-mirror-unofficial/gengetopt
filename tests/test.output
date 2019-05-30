@@ -1,7 +1,7 @@
 *** no_strings
 *** no_multi_strings
 *** no_multi_types
-*** no_unamed
+*** no_unnamed
 *** no_optgiven.sh
 ./no_optgiven: '--foo' ('-i') option required
 the no_optgiven_cmd_parser2 returned successfully
@@ -20,7 +20,7 @@ arg: test3
 *** canonize-names
 *** no_prog_name
 specified --required: foo
-additional: unamed
+additional: unnamed
 *** default_values
 foo-opt is given: 0
 bar-opt is given: 0
@@ -631,10 +631,10 @@ Usage: no multi types [OPTIONS]... [FILES]...
   -V, --version            Print version and exit
   -t, --test=A test value  This is a test option  (default=`5')
       --multi              This is a multi option with no type
-*** no_unamed -h
-no_unamed 1.0
+*** no_unnamed -h
+no_unnamed 1.0
 
-Usage: no_unamed [OPTIONS]...
+Usage: no_unnamed [OPTIONS]...
 
   -h, --help        Print help and exit
   -V, --version     Print version and exit
@@ -666,7 +666,7 @@ Usage: more_than_once [OPTIONS]... [FILES]...
   -b, --bar=STRING  bar option
 *** no_prog_name -h
 specified --required: foo
-additional: unamed
+additional: unnamed
 *** canonize-names -h
 canonize_names 1.0
 

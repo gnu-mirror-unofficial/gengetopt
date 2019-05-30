@@ -151,7 +151,7 @@ generate_help_desc_print(ostream &stream,
 
 CmdlineParserCreator::CmdlineParserCreator (char *function_name,
                                             char *struct_name,
-                                            char *unamed_options_,
+                                            char *unnamed_options_,
                                             char *filename_,
                                             char *header_ext, char *c_ext,
                                             bool long_help_,
@@ -177,7 +177,7 @@ CmdlineParserCreator::CmdlineParserCreator (char *function_name,
   header_output_dir (header_outdir),
   src_output_dir (src_outdir),
   comment (comment_),
-  unamed_options (unamed_options_),
+  unnamed_options (unnamed_options_),
   show_required_string (show_required),
   long_help (long_help_), no_handle_help (no_handle_help_),
   no_help (no_help_),
@@ -258,7 +258,7 @@ CmdlineParserCreator::CmdlineParserCreator (char *function_name,
   set_include_getopt (gen_getopt);
 
   struct gengetopt_option * opt;
-  gen_strdup = (unamed_options != 0 || conf_parser || string_parser);
+  gen_strdup = (unnamed_options != 0 || conf_parser || string_parser);
 
   if (! gen_strdup)
     {
@@ -278,7 +278,7 @@ CmdlineParserCreator::CmdlineParserCreator (char *function_name,
   set_multiple_options_all_string(has_multiple_options_all_string());
   set_has_typed_options(has_options_with_type());
   set_has_modes(has_options_with_mode());
-  set_handle_unamed(unamed_options);
+  set_handle_unnamed(unnamed_options);
   set_check_required_options(has_required() || has_dependencies() || has_multiple_options());
   set_purpose(generate_purpose());
   set_description(generate_description());
@@ -550,13 +550,13 @@ CmdlineParserCreator::generate_option_given(ostream &stream,
       given_gen.generate_given_field (stream);
     }
 
-  if (unamed_options)
+  if (unnamed_options)
     {
       stream << endl;
       stream << indent_str;
-      stream << "char **inputs ; /**< @brief unamed options (options without names) */\n" ;
+      stream << "char **inputs ; /**< @brief unnamed options (options without names) */\n" ;
       stream << indent_str;
-      stream << "unsigned inputs_num ; /**< @brief unamed options number */" ;
+      stream << "unsigned inputs_num ; /**< @brief unnamed options number */" ;
     }
 }
 
@@ -688,8 +688,8 @@ CmdlineParserCreator::generate_usage_string(bool use_config_package)
 
   string wrapped;
 
-  if ( unamed_options )
-      usage << " [" << unamed_options << "]...";
+  if ( unnamed_options )
+      usage << " [" << unnamed_options << "]...";
 
   wrap_cstr ( wrapped, strlen("Usage: "), 2, usage.str() );
 

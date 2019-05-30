@@ -15,6 +15,8 @@ Version 2.23
      (bug #34402)
    * Use singular (`[OPTION]...`, `[FILE]...`) instead of plural
      (`[OPTIONS]...`, `[FILES]...`) (bug #34394)
+   * Fix spelling of `--unnamed`. `--unamed` still provided for backwards
+     compatibility. (bug #34392)
 
 Version 2.22.6
 

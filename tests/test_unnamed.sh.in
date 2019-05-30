@@ -1,0 +1,5 @@
+#! @SHELL@
+
+# the next program must simply print the help
+
+$* ./test_unnamed --help | grep -F '[FILE]...'

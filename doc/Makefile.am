@@ -139,7 +139,7 @@ cmdline2.h: cmdline2.c
 cmdline2.c: sample2.ggo
 	$(PROGNAME) --input=$(srcdir)/sample2.ggo \
 		--func-name=my_cmdline_parser --file-name=cmdline2 \
-		--unamed-opts --no-handle-help --no-handle-version
+		--unnamed-opts --no-handle-help --no-handle-version
 
 cmdline2.o: cmdline2.c
 	$(COMPILE) \

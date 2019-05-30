@@ -45,7 +45,7 @@ class CmdlineParserCreator : public header_gen_class, public c_source_gen_class
   string header_output_dir;
   string src_output_dir;
   string comment;
-  char *unamed_options;
+  char *unnamed_options;
   string show_required_string;
 
   bool long_help;
@@ -132,7 +132,7 @@ class CmdlineParserCreator : public header_gen_class, public c_source_gen_class
  public:
 
   CmdlineParserCreator (char *function_name, char *struct_name,
-                        char *unamed_options,
+                        char *unnamed_options,
                         char *filename, char *header_ext, char *c_ext,
                         bool long_help,
                         bool no_handle_help, bool no_help,

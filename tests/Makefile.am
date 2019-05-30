@@ -22,7 +22,7 @@ if NO_CROSSCOMPILING
 SUBDIRS = output_dir output_header_dir
 
 # .ggonu is used in this test suite for command line parsers that have
-# to be created without --unamed-opt
+# to be created without --unnamed-opt
 
 SUFFIXES = .ggo .ggonu .ggoconf .ggostr
 
@@ -40,19 +40,22 @@ PROGNAMESHOWHELPREQUIRED = $(PROGNAME) --show-help --long-help --show-required
 GGO_COMPILE = $(PROGNAME) --input=$< --func-name=$*_parser --file-name=$*
 
 .ggo.c:
+	$(GGO_COMPILE) --unnamed-opt --show-required
+
+test_unamed_cmd.c: test_unamed_cmd.ggo
 	$(GGO_COMPILE) --unamed-opt --show-required
 
 .ggonu.c:
-	$(PROGNAME) --input $< --func-name $*_parser --file-name $*
+	$(GGO_COMPILE)
 
 .ggoconf.c:
-	$(GGO_COMPILE) --unamed-opt="OTHER NAMES" --conf-parser --arg-struct-name="my_args_info" --no-handle-error
+	$(GGO_COMPILE) --unnamed-opt="OTHER NAMES" --conf-parser --arg-struct-name="my_args_info" --no-handle-error
 
 .ggostr.c:
-	$(GGO_COMPILE) --unamed-opt="OTHER NAMES" --string-parser --arg-struct-name=$*_struct --include-getopt
+	$(GGO_COMPILE) --unnamed-opt="OTHER NAMES" --string-parser --arg-struct-name=$*_struct --include-getopt
 
 test_manual_help_cmd.c: $(srcdir)/test_manual_help_cmd.ggo
-	$(GGO_COMPILE) --unamed-opt --show-required --no-help --no-version
+	$(GGO_COMPILE) --unnamed-opt --show-required --no-help --no-version
 
 # INCLUDES is added to LDFLAGS because .ggo file are sources, and thus
 # the .c files are passed to the linker, which also compiles, thus
@@ -84,7 +87,7 @@ VALGRINDTESTS = \
 	no_optgiven.sh \
 	no_prog_name \
 	no_strings \
-	no_unamed \
+	no_unnamed \
 	test_all_opts.sh \
 	test_all_opts_file_save.sh \
 	test_all_opts_option_help \
@@ -117,6 +120,8 @@ VALGRINDTESTS = \
 	test_simple_multiple_default.sh \
 	test_text \
 	test_usage \
+	test_unamed.sh \
+	test_unnamed.sh \
 	test_values.sh \
 	test_values_err.sh
 
@@ -136,7 +141,7 @@ check_PROGRAMS = \
 	no_optgiven2 \
 	no_prog_name \
 	no_strings \
-	no_unamed \
+	no_unnamed \
 	test_all_opts \
 	test_all_opts_option_help \
 	test_conf_parser \
@@ -163,6 +168,8 @@ check_PROGRAMS = \
 	test_simple_multiple \
 	test_text \
 	test_usage \
+	test_unamed \
+	test_unnamed \
 	test_values \
 	test_values_cc
 
@@ -176,7 +183,7 @@ details_options_programs = test_all_opts test_no_handle_help
 no_strings_cmd.h: no_strings_cmd.c
 no_multi_strings_cmd.h: no_multi_strings_cmd.c
 no_multi_types_cmd.h: no_multi_types_cmd.c
-no_unamed_cmd.h: no_unamed_cmd.c
+no_unnamed_cmd.h: no_unnamed_cmd.c
 no_optgiven_cmd.h: no_optgiven_cmd.c
 more_than_once_cmd.h: more_than_once_cmd.c
 canonize-names-cmd.h: canonize-names-cmd.c
@@ -189,6 +196,8 @@ test_conf_parser_cmd.h: test_conf_parser_cmd.c
 test_multiple_cmd.h: test_multiple_cmd.c
 test_simple_multiple_cmd.h: test_simple_multiple_cmd.c
 test_sections_cmd.h: test_sections_cmd.c
+test_unamed_cmd.h: test_unamed_cmd.c
+test_unnamed_cmd.h: test_unnamed_cmd.c
 test_values_cmd.h: test_values_cmd.c
 test_values_cmd_cc.cc: test_values_cmd.c
 test_redef_help_cmd.h: test_redef_help_cmd.c
@@ -214,9 +223,9 @@ no_multi_strings_SOURCES = \
 no_multi_types_SOURCES = \
 	no_multi_types.c \
 	no_multi_types_cmd.ggo
-no_unamed_SOURCES = \
-	no_unamed.c \
-	no_unamed_cmd.ggonu
+no_unnamed_SOURCES = \
+	no_unnamed.c \
+	no_unnamed_cmd.ggonu
 no_optgiven_SOURCES = \
 	no_optgiven.c \
 	no_optgiven_cmd.ggo
@@ -274,6 +283,12 @@ test_simple_multiple_SOURCES = \
 test_sections_SOURCES = \
 	test_sections.c \
 	test_sections_cmd.ggo
+test_unamed_SOURCES = \
+	test_unamed.c \
+	test_unamed_cmd.ggo
+test_unnamed_SOURCES = \
+	test_unnamed.c \
+	test_unnamed_cmd.ggo
 test_values_SOURCES = \
 	test_values.c \
 	test_values_cmd.ggo
@@ -342,8 +357,8 @@ CHECKDIFFFILES = \
 	no_optgiven_cmd.h \
 	no_strings_cmd.c \
 	no_strings_cmd.h \
-	no_unamed_cmd.c \
-	no_unamed_cmd.h \
+	no_unnamed_cmd.c \
+	no_unnamed_cmd.h \
 	test_align_cmd.c \
 	test_align_cmd.h \
 	test_all_opts_cmd.c \
@@ -383,63 +398,14 @@ CHECKDIFFFILES = \
 	test_text_cmd.h \
 	test_usage_cmd.c \
 	test_usage_cmd.h \
+	test_unamed_cmd.c \
+	test_unamed_cmd.h \
+	test_unnamed_cmd.c \
+	test_unnamed_cmd.h \
 	test_values_cmd.c \
 	test_values_cmd.h
 
 BUILT_SOURCES = $(CHECKDIFFFILES)
-
-GENERATED_TESTS = \
-	canonize-names-cmd.c.test \
-	canonize-names-cmd.h.test \
-	cmdline.c.test \
-	cmdline.h.test \
-	default_values_cmd.c.test \
-	default_values_cmd.h.test \
-	more_than_once_cmd.c.test \
-	more_than_once_cmd.h.test \
-	no_multi_strings_cmd.c.test \
-	no_multi_strings_cmd.h.test \
-	no_optgiven_cmd.c.test \
-	no_optgiven_cmd.h.test \
-	no_strings_cmd.c.test \
-	no_strings_cmd.h.test \
-	no_unamed_cmd.c.test \
-	no_unamed_cmd.h.test \
-	test_align_cmd.c.test \
-	test_align_cmd.h.test \
-	test_all_opts.save.test \
-	test_all_opts_cmd.c.test \
-	test_all_opts_cmd.h.test \
-	test_conf_parser.save.test \
-	test_conf_parser_cmd.c.test \
-	test_conf_parser_cmd.h.test \
-	test_first_cmdline_cmd.c.test \
-	test_first_cmdline_cmd.h.test \
-	test_groups_cmd.c.test \
-	test_groups_cmd.h.test \
-	test_main_cmdline_cmd.c.test \
-	test_main_cmdline_cmd.h.test \
-	test_modes_cmd.c.test \
-	test_modes_cmd.h.test \
-	test_multiple.save.test \
-	test_multiple_cmd.c.test \
-	test_multiple_cmd.h.test \
-	test_no_options_cmd.c.test \
-	test_no_options_cmd.h.test \
-	test_only_flags_cmd.c.test \
-	test_only_flags_cmd.h.test \
-	test_redef_help_cmd.c.test \
-	test_redef_help_cmd.h.test \
-	test_second_cmdline_cmd.c.test \
-	test_second_cmdline_cmd.h.test \
-	test_sections_cmd.c.test \
-	test_simple_multiple_cmd.c.test \
-	test_simple_multiple_cmd.h.test \
-	test_text_cmd.c.test \
-	test_text_cmd.h.test \
-	test_values.save.test \
-	test_values_cmd.c.test \
-	test_values_cmd.h.test
 
 # the original command line used to be:
 # $(GGO_COMPILE) --no-handle-error -u
@@ -495,7 +461,6 @@ gengetoptexamples_DATA = \
 EXTRA_DIST = \
 	$(ERRFILES) \
 	$(ERRGGOFILES) \
-	$(GENERATED_TESTS) \
 	$(TESTSOUTPUT) \
 	$(gengetoptexamples_DATA) \
 	more_than_once.sh.in \
@@ -542,6 +507,8 @@ EXTRA_DIST = \
 	test_show_help.sh.in \
 	test_simple_multiple.sh.in \
 	test_simple_multiple_default.sh.in \
+	test_unamed.sh.in \
+	test_unnamed.sh.in \
 	test_values.sh.in \
 	test_values_err.sh.in \
 	valgrind_suppressions.sh.in \
@@ -552,7 +519,7 @@ check-am: check-output-dir check-output-dirs
 check-output-dir:
 	rm -f $(OUTPUTDIR)/cmdline.c $(OUTPUTDIR)/cmdline.h
 	$(PROGNAME) \
-		--unamed-opt \
+		--unnamed-opt \
 		--show-required $(OUTPUTDIR_OPTION) \
 		-i $(srcdir)/cmdline.ggo
 	test -f $(OUTPUTDIR)/cmdline.c
@@ -562,7 +529,7 @@ check-output-dirs:
 	rm -f $(OUTPUTDIR)/cmdline.c $(OUTPUTDIR)/cmdline.h
 	rm -f $(OUTPUT_SRC_DIR)/cmdline.c $(OUTPUT_HEADER_DIR)/cmdline.h
 	$(PROGNAME) \
-		--unamed-opt \
+		--unnamed-opt \
 		--show-required $(OUTPUTDIRS_OPTION) \
 		-i $(srcdir)/cmdline.ggo
 	test -f $(OUTPUT_SRC_DIR)/cmdline.c
@@ -572,7 +539,7 @@ check-err: $(ERRFILES)
 	for source in $(ERRFILES); do \
 	  test_input="`echo $$source|sed s/err/ggo/`"; \
 	  $(PROGNAME) \
-	    --unamed-opt \
+	    --unnamed-opt \
 	    -i $(srcdir)/$$test_input \
 	    --file-name null 2> $$source.out || true ; \
 	  sed -i -e "s/.*\///" $$source.out ; \
