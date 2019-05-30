@@ -22,7 +22,7 @@ if NO_CROSSCOMPILING
 SUBDIRS = output_dir output_header_dir
 
 # .ggonu is used in this test suite for command line parsers that have
-# to be created without --unamed-opt
+# to be created without --unnamed-opt
 
 SUFFIXES = .ggo .ggonu .ggoconf .ggostr
 
@@ -40,19 +40,19 @@ PROGNAMESHOWHELPREQUIRED = $(PROGNAME) --show-help --long-help --show-required
 GGO_COMPILE = $(PROGNAME) --input=$< --func-name=$*_parser --file-name=$*
 
 .ggo.c:
-	$(GGO_COMPILE) --unamed-opt --show-required
+	$(GGO_COMPILE) --unnamed-opt --show-required
 
 .ggonu.c:
 	$(PROGNAME) --input $< --func-name $*_parser --file-name $*
 
 .ggoconf.c:
-	$(GGO_COMPILE) --unamed-opt="OTHER NAMES" --conf-parser --arg-struct-name="my_args_info" --no-handle-error
+	$(GGO_COMPILE) --unnamed-opt="OTHER NAMES" --conf-parser --arg-struct-name="my_args_info" --no-handle-error
 
 .ggostr.c:
-	$(GGO_COMPILE) --unamed-opt="OTHER NAMES" --string-parser --arg-struct-name=$*_struct --include-getopt
+	$(GGO_COMPILE) --unnamed-opt="OTHER NAMES" --string-parser --arg-struct-name=$*_struct --include-getopt
 
 test_manual_help_cmd.c: $(srcdir)/test_manual_help_cmd.ggo
-	$(GGO_COMPILE) --unamed-opt --show-required --no-help --no-version
+	$(GGO_COMPILE) --unnamed-opt --show-required --no-help --no-version
 
 # INCLUDES is added to LDFLAGS because .ggo file are sources, and thus
 # the .c files are passed to the linker, which also compiles, thus
@@ -84,7 +84,7 @@ VALGRINDTESTS = \
 	no_optgiven.sh \
 	no_prog_name \
 	no_strings \
-	no_unamed \
+	no_unnamed \
 	test_all_opts.sh \
 	test_all_opts_file_save.sh \
 	test_all_opts_option_help \
@@ -136,7 +136,7 @@ check_PROGRAMS = \
 	no_optgiven2 \
 	no_prog_name \
 	no_strings \
-	no_unamed \
+	no_unnamed \
 	test_all_opts \
 	test_all_opts_option_help \
 	test_conf_parser \
@@ -176,7 +176,7 @@ details_options_programs = test_all_opts test_no_handle_help
 no_strings_cmd.h: no_strings_cmd.c
 no_multi_strings_cmd.h: no_multi_strings_cmd.c
 no_multi_types_cmd.h: no_multi_types_cmd.c
-no_unamed_cmd.h: no_unamed_cmd.c
+no_unnamed_cmd.h: no_unnamed_cmd.c
 no_optgiven_cmd.h: no_optgiven_cmd.c
 more_than_once_cmd.h: more_than_once_cmd.c
 canonize-names-cmd.h: canonize-names-cmd.c
@@ -214,9 +214,9 @@ no_multi_strings_SOURCES = \
 no_multi_types_SOURCES = \
 	no_multi_types.c \
 	no_multi_types_cmd.ggo
-no_unamed_SOURCES = \
-	no_unamed.c \
-	no_unamed_cmd.ggonu
+no_unnamed_SOURCES = \
+	no_unnamed.c \
+	no_unnamed_cmd.ggonu
 no_optgiven_SOURCES = \
 	no_optgiven.c \
 	no_optgiven_cmd.ggo
@@ -342,8 +342,8 @@ CHECKDIFFFILES = \
 	no_optgiven_cmd.h \
 	no_strings_cmd.c \
 	no_strings_cmd.h \
-	no_unamed_cmd.c \
-	no_unamed_cmd.h \
+	no_unnamed_cmd.c \
+	no_unnamed_cmd.h \
 	test_align_cmd.c \
 	test_align_cmd.h \
 	test_all_opts_cmd.c \
@@ -498,7 +498,7 @@ check-am: check-output-dir check-output-dirs
 check-output-dir:
 	rm -f $(OUTPUTDIR)/cmdline.c $(OUTPUTDIR)/cmdline.h
 	$(PROGNAME) \
-		--unamed-opt \
+		--unnamed-opt \
 		--show-required $(OUTPUTDIR_OPTION) \
 		-i $(srcdir)/cmdline.ggo
 	test -f $(OUTPUTDIR)/cmdline.c
@@ -508,7 +508,7 @@ check-output-dirs:
 	rm -f $(OUTPUTDIR)/cmdline.c $(OUTPUTDIR)/cmdline.h
 	rm -f $(OUTPUT_SRC_DIR)/cmdline.c $(OUTPUT_HEADER_DIR)/cmdline.h
 	$(PROGNAME) \
-		--unamed-opt \
+		--unnamed-opt \
 		--show-required $(OUTPUTDIRS_OPTION) \
 		-i $(srcdir)/cmdline.ggo
 	test -f $(OUTPUT_SRC_DIR)/cmdline.c
@@ -518,7 +518,7 @@ check-err: $(ERRFILES)
 	for source in $(ERRFILES); do \
 	  test_input="`echo $$source|sed s/err/ggo/`"; \
 	  $(PROGNAME) \
-	    --unamed-opt \
+	    --unnamed-opt \
 	    -i $(srcdir)/$$test_input \
 	    --file-name null 2> $$source.out || true ; \
 	  sed -i -e "s/.*\///" $$source.out ; \

@@ -263,7 +263,8 @@ main (int argc, char **argv)
   CmdlineParserCreator cmdline_parser_creator
     (cmdline_parser_name,
      args_info.arg_struct_name_arg,
-     (args_info.unamed_opts_given ? args_info.unamed_opts_arg : 0),
+     (args_info.unnamed_opts_given ? args_info.unnamed_opts_arg :
+      (args_info.unamed_opts_given ? args_info.unamed_opts_arg : 0)),
      cmdline_filename,
      header_ext,
      c_ext,

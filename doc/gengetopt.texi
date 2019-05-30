@@ -683,12 +683,12 @@ By default gengetopt generates @file{cmdline.h} and @file{cmdline.c}. Otherwise
 we can specify these names with a command line option:
 
 @example
-gengetopt < sample1.ggo --file-name=cmdline1 --unamed-opts
+gengetopt < sample1.ggo --file-name=cmdline1 --unnamed-opts
 @end example
 
 @cindex parameter
 @cindex option without name
-The option @code{--unamed-opts} allows the generated command line parser to
+The option @code{--unnamed-opts} allows the generated command line parser to
 accept also names, without an option (for instance you can pass a file name
 without an option in front of it, and also use wildcards, such as @code{*.c},
 @code{foo*.?} and so on). These are also called @emph{parameters} (see
@@ -976,8 +976,8 @@ If this command line option is given, by default, options are considered
 optional (if not explicitly specified otherwise). Otherwise, options are
 considered mandatory (if not explicitly specified otherwise).
 
-@item --unamed-opts
-@cindex @code{--unamed-opts}
+@item --unnamed-opts
+@cindex @code{--unnamed-opts}
 the program will accept also options without a name, which, in most case, means
 that we can pass many file names to the program (see the example in @ref{Basic
 Usage}, where we call @code{sample1 *.h}). You can specify an optional
