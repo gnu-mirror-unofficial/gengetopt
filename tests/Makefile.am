@@ -42,8 +42,11 @@ GGO_COMPILE = $(PROGNAME) --input=$< --func-name=$*_parser --file-name=$*
 .ggo.c:
 	$(GGO_COMPILE) --unnamed-opt --show-required
 
+test_unamed_cmd.c: test_unamed_cmd.ggo
+	$(GGO_COMPILE) --unamed-opt --show-required
+
 .ggonu.c:
-	$(PROGNAME) --input $< --func-name $*_parser --file-name $*
+	$(GGO_COMPILE)
 
 .ggoconf.c:
 	$(GGO_COMPILE) --unnamed-opt="OTHER NAMES" --conf-parser --arg-struct-name="my_args_info" --no-handle-error
@@ -117,6 +120,8 @@ VALGRINDTESTS = \
 	test_simple_multiple_default.sh \
 	test_text \
 	test_usage \
+	test_unamed.sh \
+	test_unnamed.sh \
 	test_values.sh \
 	test_values_err.sh
 
@@ -163,6 +168,8 @@ check_PROGRAMS = \
 	test_simple_multiple \
 	test_text \
 	test_usage \
+	test_unamed \
+	test_unnamed \
 	test_values \
 	test_values_cc
 
@@ -189,6 +196,8 @@ test_conf_parser_cmd.h: test_conf_parser_cmd.c
 test_multiple_cmd.h: test_multiple_cmd.c
 test_simple_multiple_cmd.h: test_simple_multiple_cmd.c
 test_sections_cmd.h: test_sections_cmd.c
+test_unamed_cmd.h: test_unamed_cmd.c
+test_unnamed_cmd.h: test_unnamed_cmd.c
 test_values_cmd.h: test_values_cmd.c
 test_values_cmd_cc.cc: test_values_cmd.c
 test_redef_help_cmd.h: test_redef_help_cmd.c
@@ -274,6 +283,12 @@ test_simple_multiple_SOURCES = \
 test_sections_SOURCES = \
 	test_sections.c \
 	test_sections_cmd.ggo
+test_unamed_SOURCES = \
+	test_unamed.c \
+	test_unamed_cmd.ggo
+test_unnamed_SOURCES = \
+	test_unnamed.c \
+	test_unnamed_cmd.ggo
 test_values_SOURCES = \
 	test_values.c \
 	test_values_cmd.ggo
@@ -383,6 +398,10 @@ CHECKDIFFFILES = \
 	test_text_cmd.h \
 	test_usage_cmd.c \
 	test_usage_cmd.h \
+	test_unamed_cmd.c \
+	test_unamed_cmd.h \
+	test_unnamed_cmd.c \
+	test_unnamed_cmd.h \
 	test_values_cmd.c \
 	test_values_cmd.h
 
@@ -488,6 +507,8 @@ EXTRA_DIST = \
 	test_show_help.sh.in \
 	test_simple_multiple.sh.in \
 	test_simple_multiple_default.sh.in \
+	test_unamed.sh.in \
+	test_unnamed.sh.in \
 	test_values.sh.in \
 	test_values_err.sh.in \
 	valgrind_suppressions.sh.in \
