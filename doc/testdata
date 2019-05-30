@@ -53,9 +53,8 @@ An ending text.
 Here is the version
 GNU gengetopt 2.0
 This is a simple test for gengetopt
-this is just a test program for gengetopt
-
 Usage: sample2 [OPTIONS]... [FILES]...
+this is just a test program for gengetopt
 
   -h, --help                    Print help and exit
       --full-help               Print help, including hidden options, and exit

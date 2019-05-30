@@ -11,6 +11,8 @@ Version 2.23
    * Drop IRIX compatibility
    * To mimic behaviour of coreutils, version string is no longer part of
      --help (bug #34400)
+   * To mimic behaviour of coreutils, usage is printed before purpose in --help
+     (bug #34402)
 
 Version 2.22.6
 

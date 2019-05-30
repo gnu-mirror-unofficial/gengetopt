@@ -183,15 +183,16 @@ static void print_help_common(void)
 	size_t len_purpose = strlen(@args_info@_purpose);
 	size_t len_usage = strlen(@args_info@_usage);
 
+	if (len_usage > 0) {
+		printf("%s\n", @args_info@_usage);
+	}
 	if (len_purpose > 0) {
 		printf("%s\n", @args_info@_purpose);
 	}
 
-	if (len_usage > 0) {
-		printf("%s%s\n", len_purpose ? "\n" : "", @args_info@_usage);
+	if (len_usage || len_purpose) {
+		printf("\n");
 	}
-
-	printf("\n");
 
 	if (strlen(@args_info@_description) > 0) {
 		printf("%s\n\n", @args_info@_description);
