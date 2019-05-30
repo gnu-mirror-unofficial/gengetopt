@@ -388,59 +388,6 @@ CHECKDIFFFILES = \
 
 BUILT_SOURCES = $(CHECKDIFFFILES)
 
-GENERATED_TESTS = \
-	canonize-names-cmd.c.test \
-	canonize-names-cmd.h.test \
-	cmdline.c.test \
-	cmdline.h.test \
-	default_values_cmd.c.test \
-	default_values_cmd.h.test \
-	more_than_once_cmd.c.test \
-	more_than_once_cmd.h.test \
-	no_multi_strings_cmd.c.test \
-	no_multi_strings_cmd.h.test \
-	no_optgiven_cmd.c.test \
-	no_optgiven_cmd.h.test \
-	no_strings_cmd.c.test \
-	no_strings_cmd.h.test \
-	no_unamed_cmd.c.test \
-	no_unamed_cmd.h.test \
-	test_align_cmd.c.test \
-	test_align_cmd.h.test \
-	test_all_opts.save.test \
-	test_all_opts_cmd.c.test \
-	test_all_opts_cmd.h.test \
-	test_conf_parser.save.test \
-	test_conf_parser_cmd.c.test \
-	test_conf_parser_cmd.h.test \
-	test_first_cmdline_cmd.c.test \
-	test_first_cmdline_cmd.h.test \
-	test_groups_cmd.c.test \
-	test_groups_cmd.h.test \
-	test_main_cmdline_cmd.c.test \
-	test_main_cmdline_cmd.h.test \
-	test_modes_cmd.c.test \
-	test_modes_cmd.h.test \
-	test_multiple.save.test \
-	test_multiple_cmd.c.test \
-	test_multiple_cmd.h.test \
-	test_no_options_cmd.c.test \
-	test_no_options_cmd.h.test \
-	test_only_flags_cmd.c.test \
-	test_only_flags_cmd.h.test \
-	test_redef_help_cmd.c.test \
-	test_redef_help_cmd.h.test \
-	test_second_cmdline_cmd.c.test \
-	test_second_cmdline_cmd.h.test \
-	test_sections_cmd.c.test \
-	test_simple_multiple_cmd.c.test \
-	test_simple_multiple_cmd.h.test \
-	test_text_cmd.c.test \
-	test_text_cmd.h.test \
-	test_values.save.test \
-	test_values_cmd.c.test \
-	test_values_cmd.h.test
-
 # the original command line used to be:
 # $(GGO_COMPILE) --no-handle-error -u
 # but now are in the input .ggo file
@@ -495,7 +442,6 @@ gengetoptexamples_DATA = \
 EXTRA_DIST = \
 	$(ERRFILES) \
 	$(ERRGGOFILES) \
-	$(GENERATED_TESTS) \
 	$(TESTSOUTPUT) \
 	$(gengetoptexamples_DATA) \
 	more_than_once.sh.in \
