@@ -82,7 +82,7 @@ option  "long-help"     l "long usage line in help" optional
 
 sample1 -iINT|--int-opt=INT [-h|--help]\n"
 option  "default-optional"     - "by default, an option is considered optional if not specified otherwise" optional
-option  "unamed-opts"   u "accept options without names (e.g., file names)" string default="FILES" optional argoptional
+option  "unamed-opts"   u "accept options without names (e.g., file names)" string default="FILE" optional argoptional
 
 text "\nThe parser generated is thought to be used to parse the command line arguments. "
 text "However, you can also generate parsers for configuration files, or strings "

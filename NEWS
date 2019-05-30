@@ -13,6 +13,8 @@ Version 2.23
      --help (bug #34400)
    * To mimic behaviour of coreutils, usage is printed before purpose in --help
      (bug #34402)
+   * Use singular (`[OPTION]...`, `[FILE]...`) instead of plural
+     (`[OPTIONS]...`, `[FILES]...`) (bug #34394)
 
 Version 2.22.6
 

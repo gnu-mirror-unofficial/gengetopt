@@ -683,7 +683,7 @@ CmdlineParserCreator::generate_usage_string(bool use_config_package)
               generate_option_usage_string(opt, usage);
           }
   } else { /* if not long help we generate it as GNU standards */
-      usage << " [OPTIONS]...";
+      usage << " [OPTION]...";
   }
 
   string wrapped;
