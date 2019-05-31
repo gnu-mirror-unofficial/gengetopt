@@ -74,7 +74,12 @@ GENERATEDINFOS = \
 	test_multiple_parsers.c.texi
 
 gengetopt_TEXINFOS = $(GENERATEDINFOS)
-BUILT_SOURCES = $(GENERATEDINFOS)
+BUILT_SOURCES = \
+	$(GENERATEDINFOS) \
+	cmdline1.c \
+	cmdline1.h \
+	cmdline2.c \
+	cmdline2.h
 
 SUFFIXES = .h.texi .cc.texi .c.texi .ggo.texi .ggo
 
@@ -110,12 +115,10 @@ help_modes.output.texi: $(top_srcdir)/tests/test_modes_cmd.ggo
 	$(PROGNAME) --show-help --long-help \
 		-i $(top_srcdir)/tests/test_modes_cmd.ggo > $@
 
-sample1.output.texi: sample1.ggo
-	$(MAKE) $(AM_MAKEFLAGS) sample1$(EXEEXT)
+sample1.output.texi: sample1$(EXEEXT) sample1.ggo
 	./sample1$(EXEEXT) --help | sed -f $(srcdir)/input.sed > $@
 
-sample1_2.output.texi: sample1.ggo
-	$(MAKE) $(AM_MAKEFLAGS) sample1$(EXEEXT)
+sample1_2.output.texi: sample1$(EXEEXT) sample1.ggo
 	./sample1$(EXEEXT) --detailed-help | sed -f $(srcdir)/input.sed > $@
 
 EXTRA_DIST = \
