@@ -102,10 +102,10 @@ gl_INIT
 AC_PATH_PROGS(TAR, tar gtar)
 
 dnl this is for testing purpose and development
-AC_PATH_PROGS(VALGRIND, valgrind)
+AC_PATH_PROGS(VALGRIND, [valgrind], [:])
 
 dnl this is only for developers who use change command line options
-AC_PATH_PROGS(HELP2MAN, help2man)
+AC_PATH_PROGS(HELP2MAN, [help2man], [:])
 
 dnl we want to avoid tests in case we're crosscompiling
 dnl since we would not be able to run the gengetopt executable in that case

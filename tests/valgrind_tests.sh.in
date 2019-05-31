@@ -11,11 +11,10 @@
 #
 # --------------------------------------------------------------------- #
 
-
-# Hack to run valgrind with new glibcs.  Problem: new TLS (thread
-# local storage)
-
-#VG_ENV="LD_ASSUME_KERNEL=2.2.5"
+if test x"@VALGRIND@" = ":"; then
+	echo >&2 "valgrind is required to run this"
+	exit 1
+fi
 
 VG_PRG="@VALGRIND@"
 VG_ARGS="--tool=memcheck --num-callers=20 --leak-check=yes --leak-resolution=high --show-reachable=yes --suppressions=@srcdir@/suppressions.supp"

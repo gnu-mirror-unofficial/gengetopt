@@ -25,7 +25,11 @@ GGO_FILES = $(srcdir)/sample1.ggo $(srcdir)/sample2.ggo
 man_MANS = gengetopt.1
 
 gengetopt.1: $(top_srcdir)/src/cmdline.ggo
-	$(HELP2MAN) $(PROGNAME) --help-option="--detailed-help" > $@
+	@if test x"$(HELP2MAN)" == x":"; then \
+		echo >&2 "Error: help2man is required to create $@"; \
+		exit 1; \
+	fi
+	$(HELP2MAN) --help-option="--detailed-help" -- $(PROGNAME) > $@
 
 
 EXTRA_PROGRAMS = sample1 sample2
