@@ -16,7 +16,6 @@
 # with gengetopt; see the file COPYING. If not, write to the Free Software 
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
 
-
 if NO_CROSSCOMPILING
 
 SUBDIRS = output_dir output_header_dir
@@ -29,15 +28,8 @@ SUFFIXES = .ggo .ggonu .ggoconf .ggostr
 # we do not generate the gengetopt version number in the output
 # file so that the number does not disturb in diffing when changing
 # gengetopt version
-PROGNAME = $(top_builddir)/src/gengetopt$(EXEEXT) --gen-version
-
-PROGNAMESHOWHELP = $(PROGNAME) --show-help --long-help
-PROGNAMESHOWFULLHELP = $(PROGNAME) --show-full-help --long-help
-PROGNAMESHOWDETAILEDHELP = $(PROGNAME) --show-detailed-help --long-help
-
-PROGNAMESHOWHELPREQUIRED = $(PROGNAME) --show-help --long-help --show-required
-
-GGO_COMPILE = $(PROGNAME) --input=$< --func-name=$*_parser --file-name=$*
+NEW_GENGETOPT = $(top_builddir)/src/gengetopt$(EXEEXT) --gen-version
+GGO_COMPILE = $(NEW_GENGETOPT) --input=$< --func-name=$*_parser --file-name=$*
 
 .ggo.c:
 	$(GGO_COMPILE) --unnamed-opt --show-required
@@ -49,10 +41,12 @@ test_unamed_cmd.c: test_unamed_cmd.ggo
 	$(GGO_COMPILE)
 
 .ggoconf.c:
-	$(GGO_COMPILE) --unnamed-opt="OTHER NAMES" --conf-parser --arg-struct-name="my_args_info" --no-handle-error
+	$(GGO_COMPILE) --unnamed-opt="OTHER NAMES" --conf-parser \
+		--arg-struct-name="my_args_info" --no-handle-error
 
 .ggostr.c:
-	$(GGO_COMPILE) --unnamed-opt="OTHER NAMES" --string-parser --arg-struct-name=$*_struct --include-getopt
+	$(GGO_COMPILE) --unnamed-opt="OTHER NAMES" --string-parser \
+		--arg-struct-name=$*_struct --include-getopt
 
 test_manual_help_cmd.c: $(srcdir)/test_manual_help_cmd.ggo
 	$(GGO_COMPILE) --unnamed-opt --show-required --no-help --no-version
@@ -66,14 +60,6 @@ AM_LDFLAGS = $(DEFS) $(INCLUDES)
 AM_CPPFLAGS = -I$(top_srcdir)/gl -I$(top_builddir)/gl
 
 LDADD = $(top_builddir)/gl/libgnu.la
-
-OUTPUTDIR = $(top_builddir)/tests/output_dir
-OUTPUT_SRC_DIR = $(top_builddir)/tests/output_dir
-OUTPUT_HEADER_DIR = $(top_builddir)/tests/output_header_dir
-OUTPUTDIR_OPTION = --output-dir=$(OUTPUTDIR)
-OUTPUTDIRS_OPTION = \
-	--src-output-dir=$(OUTPUT_SRC_DIR) \
-	--header-output-dir=$(OUTPUT_HEADER_DIR)
 
 EXPECT = 1
 
@@ -127,8 +113,10 @@ VALGRINDTESTS = \
 
 TESTS = \
 	$(VALGRINDTESTS) \
-	test_err.sh \
-	test_show_help.sh
+	test_output_dir.sh \
+	test_output_dirs.sh \
+	test_show_help.sh \
+	test_wrong_ggo.sh
 
 check_PROGRAMS = \
 	canonize-names \
@@ -176,10 +164,6 @@ check_PROGRAMS = \
 hidden_options_programs = test_all_opts
 details_options_programs = test_all_opts test_no_handle_help
 
-# in order to make it work with parallel make we need to make
-# these deps explicit
-# NOTE: this problem shows only on distribution tarballs
-# since files in .deps are empty
 no_strings_cmd.h: no_strings_cmd.c
 no_multi_strings_cmd.h: no_multi_strings_cmd.c
 no_multi_types_cmd.h: no_multi_types_cmd.c
@@ -407,22 +391,29 @@ CHECKDIFFFILES = \
 
 BUILT_SOURCES = $(CHECKDIFFFILES)
 
-# the original command line used to be:
-# $(GGO_COMPILE) --no-handle-error -u
-# but now are in the input .ggo file
 no_optgiven_cmd.c: no_optgiven_cmd.ggo
 	$(GGO_COMPILE)
+no_optgiven_cmd.h: no_optgiven_cmd.c
+	@if test -f $@; then :; else \
+		rm -f -- $<; \
+		$(MAKE) $(AM_MAKEFLAGS) $<; \
+	fi
 
 # using $(top_builddir) should test also the removal of leading path
 # for the generation of the #ifndef in the generated header file
 canonize-names-cmd.c: canonize-names-cmd.ggo
-	$(PROGNAME) \
+	$(NEW_GENGETOPT) \
 		--input $(srcdir)/canonize-names-cmd.ggo \
 		--func-name $*-parser \
 		--file-name $(top_builddir)/tests/$*
 
 cmdline.c: cmdline.ggo
-	$(PROGNAME) --input $(srcdir)/cmdline.ggo
+	$(NEW_GENGETOPT) --input $(srcdir)/cmdline.ggo
+cmdline.h: cmdline.c
+	@if test -f $@; then :; else \
+		rm -f -- $<; \
+		$(MAKE) $(AM_MAKEFLAGS) $<; \
+	fi
 
 TESTSOUT = test.out
 TESTSOUTPUT = test.output
@@ -492,7 +483,6 @@ EXTRA_DIST = \
 	test_conf_parser_save.sh.in \
 	test_default_values.sh.in \
 	test_dep.sh.in \
-	test_err.sh.in \
 	test_groups.sh.in \
 	test_manual_help.sh.in \
 	test_manual_help_args.sh.in \
@@ -514,159 +504,6 @@ EXTRA_DIST = \
 	valgrind_suppressions.sh.in \
 	valgrind_tests.sh.in
 
-check-am: check-output-dir check-output-dirs
-
-check-output-dir:
-	rm -f $(OUTPUTDIR)/cmdline.c $(OUTPUTDIR)/cmdline.h
-	$(PROGNAME) \
-		--unnamed-opt \
-		--show-required $(OUTPUTDIR_OPTION) \
-		-i $(srcdir)/cmdline.ggo
-	test -f $(OUTPUTDIR)/cmdline.c
-	test -f $(OUTPUTDIR)/cmdline.h
-
-check-output-dirs:
-	rm -f $(OUTPUTDIR)/cmdline.c $(OUTPUTDIR)/cmdline.h
-	rm -f $(OUTPUT_SRC_DIR)/cmdline.c $(OUTPUT_HEADER_DIR)/cmdline.h
-	$(PROGNAME) \
-		--unnamed-opt \
-		--show-required $(OUTPUTDIRS_OPTION) \
-		-i $(srcdir)/cmdline.ggo
-	test -f $(OUTPUT_SRC_DIR)/cmdline.c
-	test -f $(OUTPUT_HEADER_DIR)/cmdline.h
-
-check-err: $(ERRFILES)
-	for source in $(ERRFILES); do \
-	  test_input="`echo $$source|sed s/err/ggo/`"; \
-	  $(PROGNAME) \
-	    --unnamed-opt \
-	    -i $(srcdir)/$$test_input \
-	    --file-name null 2> $$source.out || true ; \
-	  sed -i -e "s/.*\///" $$source.out ; \
-	  echo "diff $$source.out $$source"; \
-	  if ! diff $$source.out $(srcdir)/$$source; \
-	  then errors=1; fi; \
-	done ; \
-	test -z $$errors
-
-$(TESTSOUTPUT):
-	rm -f $(TESTSOUTPUT); \
-        for source in $(TESTS); do \
-	  echo "*** $$source" >> $@; \
-	  $(top_builddir)/tests/$$source >> $@ 2>&1; \
-	done && \
-	for source in $(check_PROGRAMS); do \
-	  echo "*** $$source -h" >> $@; \
-	  $(top_builddir)/tests/$$source -h >> $@ 2>&1; \
-	done && \
-	for source in $(hidden_options_programs); do \
-	  echo "*** $$source --full-help" >> $@; \
-	  $(top_builddir)/tests/$$source --full-help >> $@ 2>&1; \
-	done && \
-	for source in $(details_options_programs); do \
-	  echo "*** $$source --detailed-help" >> $@; \
-	  $(top_builddir)/tests/$$source --detailed-help >> $@ 2>&1; \
-	done && \
-	$(PROGNAMESHOWHELP) < $(srcdir)/test_all_opts_cmd.ggo >> $@ 2>&1;
-	$(PROGNAMESHOWFULLHELP) < $(srcdir)/test_all_opts_cmd.ggo >> $@ 2>&1;
-	$(PROGNAMESHOWFULLHELP) < $(srcdir)/test_modes_cmd.ggo >> $@ 2>&1;
-	$(PROGNAMESHOWDETAILEDHELP) \
-		< $(srcdir)/test_all_opts_cmd.ggo >> $@ 2>&1;
-	$(PROGNAMESHOWHELP) \
-		< $(srcdir)/test_section_with_all_hidden.ggo >> $@ 2>&1;
-	$(PROGNAMESHOWFULLHELP) \
-		< $(srcdir)/test_section_with_all_hidden.ggo >> $@ 2>&1;
-	$(PROGNAME) --show-help < $(srcdir)/test_align_cmd.ggo >> $@ 2>&1;
-	$(PROGNAME) --show-full-help < $(srcdir)/test_align_cmd.ggo >> $@ 2>&1;
-	$(PROGNAMESHOWHELPREQUIRED) \
-		< $(srcdir)/test_required_optional_cmd.ggo >> $@ 2>&1;
-	$(PROGNAMESHOWHELPREQUIRED) --default-optional \
-		< $(srcdir)/test_required_optional_cmd.ggo >> $@ 2>&1;
-	$(PROGNAMESHOWFULLHELP) $(srcdir)/test_strict_hidden.ggo >> $@ 2>&1;
-	$(PROGNAMESHOWDETAILEDHELP) $(srcdir)/test_strict_hidden.ggo \
-		>> $@ 2>&1;
-
-store-backup: $(BUILT_SOURCES) $(TESTSOUTPUT)
-	rm -f *.test; \
-	for source in $(BUILT_SOURCES); do \
-	  back_output="`echo $$source.test`"; \
-	  echo "saving $$back_output"; \
-	  cp $$source $(srcdir)/$$back_output; \
-	done; \
-	for source in `ls *.save`; do \
-	  test_output="`echo $$source|sed s/save/save\.test/`"; \
-	  cp $$source $(srcdir)/$$test_output; \
-        done; \
-	cp $(TESTSOUT) $(srcdir)/$(TESTSOUTPUT); \
-	rm -f *.err.test
-
-check-diff:
-	for source in $(CHECKDIFFFILES); do \
-	  back_output="`echo $$source.test`"; \
-	  echo "diff $$source $$back_output"; \
-	  if ! diff $$source $(srcdir)/$$back_output; \
-	  then errors=1; fi; \
-	done && \
-	echo "creating output of tests..."; \
-	rm -f $(TESTSOUT); \
-        for tests in $(TESTS); do \
-	  echo "*** $$tests" >> $(TESTSOUT); \
-	  $(top_builddir)/tests/$$tests >> $(TESTSOUT) 2>&1 ; \
-	done && \
-	for tests in $(check_PROGRAMS); do \
-	  echo "*** $$tests -h" >> $(TESTSOUT); \
-	  $(top_builddir)/tests/$$tests -h >> $(TESTSOUT) 2>&1; \
-	done && \
-	for tests in $(hidden_options_programs); do \
-	  echo "*** $$tests --full-help" >> $(TESTSOUT); \
-	  $(top_builddir)/tests/$$tests --full-help >> $(TESTSOUT) 2>&1; \
-	done && \
-	for tests in $(details_options_programs); do \
-	  echo "*** $$tests --detailed-help" >> $(TESTSOUT); \
-	  $(top_builddir)/tests/$$tests --detailed-help >> $(TESTSOUT) 2>&1; \
-	done && \
-	$(PROGNAMESHOWHELP) \
-		< $(srcdir)/test_all_opts_cmd.ggo >> $(TESTSOUT) 2>&1; \
-	$(PROGNAMESHOWFULLHELP) \
-		< $(srcdir)/test_all_opts_cmd.ggo >> $(TESTSOUT) 2>&1; \
-	$(PROGNAMESHOWFULLHELP) \
-		< $(srcdir)/test_modes_cmd.ggo >> $(TESTSOUT) 2>&1; \
-	$(PROGNAMESHOWDETAILEDHELP) \
-		< $(srcdir)/test_all_opts_cmd.ggo >> $(TESTSOUT) 2>&1; \
-	$(PROGNAMESHOWHELP) \
-		< $(srcdir)/test_section_with_all_hidden.ggo \
-		>> $(TESTSOUT) 2>&1; \
-	$(PROGNAMESHOWFULLHELP) \
-		< $(srcdir)/test_section_with_all_hidden.ggo \
-		>> $(TESTSOUT) 2>&1; \
-	$(PROGNAME) --show-help \
-		< $(srcdir)/test_align_cmd.ggo >> $(TESTSOUT) 2>&1; \
-	$(PROGNAME) --show-full-help \
-		< $(srcdir)/test_align_cmd.ggo >> $(TESTSOUT) 2>&1; \
-	$(PROGNAMESHOWHELPREQUIRED) \
-		< $(srcdir)/test_required_optional_cmd.ggo \
-		>> $(TESTSOUT) 2>&1; \
-	$(PROGNAMESHOWHELPREQUIRED) --default-optional \
-		< $(srcdir)/test_required_optional_cmd.ggo \
-		>> $(TESTSOUT) 2>&1; \
-	$(PROGNAMESHOWFULLHELP) \
-		< $(srcdir)/test_strict_hidden.ggo >> $(TESTSOUT) 2>&1; \
-	$(PROGNAMESHOWDETAILEDHELP) \
-		< $(srcdir)/test_strict_hidden.ggo >> ${TESTSOUT} 2>&1; \
-	sed -i -e "s/\.exe//g" $(TESTSOUT) ; \
-        echo "diff $(TESTSOUTPUT) $(TESTSOUT)"; \
-        if ! diff $(srcdir)/$(TESTSOUTPUT) $(TESTSOUT); \
-        then errors=1; fi; \
-	for source in `ls *.save`; do \
-	  test_output="`echo $$source|sed s/save/save\.test/`"; \
-	  echo "diff $$source $(srcdir)/$$test_output"; \
-	  if ! diff $$source $(srcdir)/$$test_output; \
-	  then errors=1; fi; \
-        done; \
-        test -z $$errors
-
-my-check: clean check check-diff
-
 check-valgrind:
 	$(top_builddir)/tests/valgrind_tests.sh $(VALGRINDTESTS)
 	$(top_builddir)/tests/valgrind_tests.sh \
@@ -676,8 +513,9 @@ check-valgrind:
 	$(top_builddir)/tests/valgrind_tests.sh \
 		$(top_builddir)/tests/test_all_opts$(EXEEXT) --help
 
-clean-err:
-	rm -f *.err
+clean-local:
+	rm -rf output_dir
+	rm -rf output_dirs
 
 CLEANFILES = \
 	*-cmd.c \

@@ -194,10 +194,6 @@ AC_CONFIG_FILES(
 	[chmod +x tests/test_dep.sh]
 )
 AC_CONFIG_FILES(
-	[tests/test_err.sh],
-	[chmod +x tests/test_err.sh]
-)
-AC_CONFIG_FILES(
 	[tests/test_groups.sh],
 	[chmod +x tests/test_groups.sh]
 )
@@ -224,6 +220,14 @@ AC_CONFIG_FILES(
 AC_CONFIG_FILES(
 	[tests/test_multiple_parsers.sh],
 	[chmod +x tests/test_multiple_parsers.sh]
+)
+AC_CONFIG_FILES(
+	[tests/test_output_dir.sh],
+	[chmod +x tests/test_output_dir.sh]
+)
+AC_CONFIG_FILES(
+	[tests/test_output_dirs.sh],
+	[chmod +x tests/test_output_dirs.sh]
 )
 AC_CONFIG_FILES(
 	[tests/test_sections.sh],
@@ -256,6 +260,10 @@ AC_CONFIG_FILES(
 AC_CONFIG_FILES(
 	[tests/test_values_err.sh],
 	[chmod +x tests/test_values_err.sh]
+)
+AC_CONFIG_FILES(
+	[tests/test_wrong_ggo.sh],
+	[chmod +x tests/test_wrong_ggo.sh]
 )
 AC_CONFIG_FILES(
 	[tests/valgrind_suppressions.sh],
