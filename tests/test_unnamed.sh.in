@@ -1,5 +1,5 @@
 #! @SHELL@
 
-# the next program must simply print the help
+set -ex
 
-$* ./test_unnamed --help | grep -F '[FILE]...'
+"$@" ./test_unnamed --help | grep -F '[FILE]...'

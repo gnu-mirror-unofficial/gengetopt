@@ -18,8 +18,6 @@
 
 if NO_CROSSCOMPILING
 
-SUBDIRS = output_dir output_header_dir
-
 # .ggonu is used in this test suite for command line parsers that have
 # to be created without --unnamed-opt
 
@@ -456,7 +454,6 @@ EXTRA_DIST = \
 	$(gengetoptexamples_DATA) \
 	more_than_once.sh.in \
 	no_optgiven.sh.in \
-	suppressions.supp \
 	test_align_cmd.ggo \
 	test_all_opts.sh.in \
 	test_all_opts_file_save.sh.in \
@@ -501,17 +498,10 @@ EXTRA_DIST = \
 	test_unnamed.sh.in \
 	test_values.sh.in \
 	test_values_err.sh.in \
-	valgrind_suppressions.sh.in \
 	valgrind_tests.sh.in
 
 check-valgrind:
-	$(top_builddir)/tests/valgrind_tests.sh $(VALGRINDTESTS)
-	$(top_builddir)/tests/valgrind_tests.sh \
-		$(top_builddir)/tests/default_values$(EXEEXT) --help
-	$(top_builddir)/tests/valgrind_tests.sh \
-		$(top_builddir)/tests/default_values$(EXEEXT) --version
-	$(top_builddir)/tests/valgrind_tests.sh \
-		$(top_builddir)/tests/test_all_opts$(EXEEXT) --help
+	./valgrind_tests.sh $(VALGRINDTESTS)
 
 clean-local:
 	rm -rf output_dir

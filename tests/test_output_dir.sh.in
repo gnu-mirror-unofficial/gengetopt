@@ -1,17 +1,19 @@
 #! @SHELL@
 
+set -ex
+
 gengetopt="$(cd ../src; pwd)/gengetopt"
-srcdir=@srcdir@
-builddir=@builddir@
+srcdir="@srcdir@"
+builddir="@builddir@"
 
 out_dir="$builddir/output_dir"
 
 if [ -d "$out_dir" ]; then
 	rm -rf -- "$out_dir"
 fi
-mkdir -p "$out_dir"
+mkdir -p -- "$out_dir"
 
-"$gengetopt" --unnamed-opt --show-required \
+! "$gengetopt" --unnamed-opt --show-required \
 	--output-dir="$out_dir" \
 	--input "$srcdir/cmdline.ggo"
 

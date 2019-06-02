@@ -111,9 +111,6 @@ dnl we want to avoid tests in case we're crosscompiling
 dnl since we would not be able to run the gengetopt executable in that case
 AM_CONDITIONAL(NO_CROSSCOMPILING, test "$cross_compiling" = no )
 
-dnl some scripts (e.g., valgrind_test.sh) need bash extensions
-AC_PATH_PROGS(BASH_SHELL, bash sh)
-
 AH_TEMPLATE(HAVE_LONG_LONG)
 
 AC_CONFIG_FILES([
@@ -124,154 +121,48 @@ AC_CONFIG_FILES([
 	src/skels/Makefile
 	src/tests/Makefile
 	tests/Makefile
-	tests/output_dir/Makefile
-	tests/output_header_dir/Makefile
 	tests/test_conf.conf
 	tests/test_conf_inc.conf
 	tests/test_conf_parser_ov2.c
 	tests/test_conf_parser_ov3.c
 	tests/test_conf_parser_ov4.c
 ])
-            
-AC_CONFIG_FILES(
-	[tests/more_than_once.sh],
-	[chmod +x tests/more_than_once.sh]
-)
-AC_CONFIG_FILES(
-	[tests/no_optgiven.sh],
-	[chmod +x tests/no_optgiven.sh]
-)
-AC_CONFIG_FILES(
-	[tests/test_all_opts.sh],
-	[chmod +x tests/test_all_opts.sh]
-)
-AC_CONFIG_FILES(
-	[tests/test_all_opts_file_save.sh],
-	[chmod +x tests/test_all_opts_file_save.sh]
-)
-AC_CONFIG_FILES(
-	[tests/test_conf_parser.sh],
-	[chmod +x tests/test_conf_parser.sh]
-)
-AC_CONFIG_FILES(
-	[tests/test_conf_parser_err.sh],
-	[chmod +x tests/test_conf_parser_err.sh]
-)
-AC_CONFIG_FILES(
-	[tests/test_conf_parser_err_string.sh],
-	[chmod +x tests/test_conf_parser_err_string.sh]
-)
-AC_CONFIG_FILES(
-	[tests/test_conf_parser_grp.sh],
-	[chmod +x tests/test_conf_parser_grp.sh]
-)
-AC_CONFIG_FILES(
-	[tests/test_conf_parser_ov.sh],
-	[chmod +x tests/test_conf_parser_ov.sh]
-)
-AC_CONFIG_FILES(
-	[tests/test_conf_parser_ov2.sh],
-	[chmod +x tests/test_conf_parser_ov2.sh]
-)
-AC_CONFIG_FILES(
-	[tests/test_conf_parser_ov3.sh],
-	[chmod +x tests/test_conf_parser_ov3.sh]
-)
-AC_CONFIG_FILES(
-	[tests/test_conf_parser_ov4.sh],
-	[chmod +x tests/test_conf_parser_ov4.sh]
-)
-AC_CONFIG_FILES(
-	[tests/test_conf_parser_save.sh],
-	[chmod +x tests/test_conf_parser_save.sh]
-)
-AC_CONFIG_FILES(
-	[tests/test_default_values.sh],
-	[chmod +x tests/test_default_values.sh]
-)
-AC_CONFIG_FILES(
-	[tests/test_dep.sh],
-	[chmod +x tests/test_dep.sh]
-)
-AC_CONFIG_FILES(
-	[tests/test_groups.sh],
-	[chmod +x tests/test_groups.sh]
-)
-AC_CONFIG_FILES(
-	[tests/test_manual_help.sh],
-	[chmod +x tests/test_manual_help.sh]
-)
-AC_CONFIG_FILES(
-	[tests/test_manual_help_args.sh],
-	[chmod +x tests/test_manual_help_args.sh]
-)
-AC_CONFIG_FILES(
-	[tests/test_modes.sh],
-	[chmod +x tests/test_modes.sh]
-)
-AC_CONFIG_FILES(
-	[tests/test_multiple.sh],
-	[chmod +x tests/test_multiple.sh]
-)
-AC_CONFIG_FILES(
-	[tests/test_multiple_err.sh],
-	[chmod +x tests/test_multiple_err.sh]
-)
-AC_CONFIG_FILES(
-	[tests/test_multiple_parsers.sh],
-	[chmod +x tests/test_multiple_parsers.sh]
-)
-AC_CONFIG_FILES(
-	[tests/test_output_dir.sh],
-	[chmod +x tests/test_output_dir.sh]
-)
-AC_CONFIG_FILES(
-	[tests/test_output_dirs.sh],
-	[chmod +x tests/test_output_dirs.sh]
-)
-AC_CONFIG_FILES(
-	[tests/test_sections.sh],
-	[chmod +x tests/test_sections.sh]
-)
-AC_CONFIG_FILES(
-	[tests/test_show_help.sh],
-	[chmod +x tests/test_show_help.sh]
-)
-AC_CONFIG_FILES(
-	[tests/test_simple_multiple.sh],
-	[chmod +x tests/test_simple_multiple.sh]
-)
-AC_CONFIG_FILES(
-	[tests/test_simple_multiple_default.sh],
-	[chmod +x tests/test_simple_multiple_default.sh]
-)
-AC_CONFIG_FILES(
-	[tests/test_unamed.sh],
-	[chmod +x tests/test_unamed.sh]
-)
-AC_CONFIG_FILES(
-	[tests/test_unnamed.sh],
-	[chmod +x tests/test_unnamed.sh]
-)
-AC_CONFIG_FILES(
-	[tests/test_values.sh],
-	[chmod +x tests/test_values.sh]
-)
-AC_CONFIG_FILES(
-	[tests/test_values_err.sh],
-	[chmod +x tests/test_values_err.sh]
-)
-AC_CONFIG_FILES(
-	[tests/test_wrong_ggo.sh],
-	[chmod +x tests/test_wrong_ggo.sh]
-)
-AC_CONFIG_FILES(
-	[tests/valgrind_suppressions.sh],
-	[chmod +x tests/valgrind_suppressions.sh]
-)
-AC_CONFIG_FILES(
-	[tests/valgrind_tests.sh],
-	[chmod +x tests/valgrind_tests.sh]
-)
+
+AC_DEFUN([AC_CONFIG_TEST_SH], [AC_CONFIG_FILES([$1], [chmod -- +x $1])])
+
+AC_CONFIG_TEST_SH([tests/more_than_once.sh])
+AC_CONFIG_TEST_SH([tests/no_optgiven.sh])
+AC_CONFIG_TEST_SH([tests/test_all_opts.sh])
+AC_CONFIG_TEST_SH([tests/test_all_opts_file_save.sh])
+AC_CONFIG_TEST_SH([tests/test_conf_parser.sh])
+AC_CONFIG_TEST_SH([tests/test_conf_parser_err.sh])
+AC_CONFIG_TEST_SH([tests/test_conf_parser_err_string.sh])
+AC_CONFIG_TEST_SH([tests/test_conf_parser_grp.sh])
+AC_CONFIG_TEST_SH([tests/test_conf_parser_ov.sh])
+AC_CONFIG_TEST_SH([tests/test_conf_parser_ov2.sh])
+AC_CONFIG_TEST_SH([tests/test_conf_parser_ov3.sh])
+AC_CONFIG_TEST_SH([tests/test_conf_parser_ov4.sh])
+AC_CONFIG_TEST_SH([tests/test_conf_parser_save.sh])
+AC_CONFIG_TEST_SH([tests/test_default_values.sh])
+AC_CONFIG_TEST_SH([tests/test_dep.sh])
+AC_CONFIG_TEST_SH([tests/test_groups.sh])
+AC_CONFIG_TEST_SH([tests/test_manual_help.sh])
+AC_CONFIG_TEST_SH([tests/test_manual_help_args.sh])
+AC_CONFIG_TEST_SH([tests/test_modes.sh])
+AC_CONFIG_TEST_SH([tests/test_multiple.sh])
+AC_CONFIG_TEST_SH([tests/test_multiple_err.sh])
+AC_CONFIG_TEST_SH([tests/test_multiple_parsers.sh])
+AC_CONFIG_TEST_SH([tests/test_output_dir.sh])
+AC_CONFIG_TEST_SH([tests/test_output_dirs.sh])
+AC_CONFIG_TEST_SH([tests/test_sections.sh])
+AC_CONFIG_TEST_SH([tests/test_show_help.sh])
+AC_CONFIG_TEST_SH([tests/test_simple_multiple.sh])
+AC_CONFIG_TEST_SH([tests/test_simple_multiple_default.sh])
+AC_CONFIG_TEST_SH([tests/test_unamed.sh])
+AC_CONFIG_TEST_SH([tests/test_unnamed.sh])
+AC_CONFIG_TEST_SH([tests/test_values.sh])
+AC_CONFIG_TEST_SH([tests/test_values_err.sh])
+AC_CONFIG_TEST_SH([tests/test_wrong_ggo.sh])
+AC_CONFIG_TEST_SH([tests/valgrind_tests.sh])
 
 AC_OUTPUT
