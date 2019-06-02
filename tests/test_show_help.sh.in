@@ -1,17 +1,9 @@
 #! @SHELL@
 
-# the next program must not exit with error
+set -ex
 
-if $* ../src/gengetopt@EXEEXT@ --show-help -i @srcdir@/test_all_opts_cmd.ggo ; then 
-        if $* ../src/gengetopt@EXEEXT@ --show-version -i @srcdir@/test_all_opts_cmd.ggo ; then 
-                if $* ../src/gengetopt@EXEEXT@ --show-help -i @srcdir@/test_values_cmd.ggo ; then 
-                        true;
-                else
-                        false;
-                fi
-        else
-                false;
-        fi
-else 
-        false; 
-fi
+gengetopt="$(cd ../src; pwd)/gengetopt"
+
+"$@" "$gengetopt" --show-help -i "@srcdir@/test_all_opts_cmd.ggo"
+"$@" "$gengetopt" --show-version -i "@srcdir@/test_all_opts_cmd.ggo"
+"$@" "$gengetopt" --show-help -i "@srcdir@/test_values_cmd.ggo"

@@ -1,6 +1,6 @@
 #! @SHELL@
 
-# the next program must exit with error
+set -ex
 
-if $* ./test_all_opts -r10 --dependant=foo ; then false; else if $* ./test_all_opts -r10 --dependant=foo --opt-arg=bar ; then true; else false; fi fi
-
+! "$@" ./test_all_opts -r10 --dependant=foo
+"$@" ./test_all_opts -r10 --dependant=foo --opt-arg=bar

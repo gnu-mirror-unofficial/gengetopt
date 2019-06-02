@@ -1,5 +1,5 @@
 #! @SHELL@
 
-# the next program must succeed
+set -ex
 
-if $* ./test_simple_multiple; then true; else false; fi
+"$@" ./test_simple_multiple

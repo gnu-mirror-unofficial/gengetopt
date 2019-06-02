@@ -18,11 +18,6 @@
 
 SUBDIRS = skels tests
 
-SUFFIXES = .text .c .ggo
-
-.text.o:
-	$(TXTC) $<
-
 bin_PROGRAMS = gengetopt
 
 noinst_LTLIBRARIES = libgengetopt.la
@@ -30,7 +25,7 @@ noinst_LTLIBRARIES = libgengetopt.la
 libgengetopt_la_SOURCES = \
 	acceptedvalues.cpp \
 	argsdef.c \
-	cmdline.ggo \
+	cmdline.c \
 	fileutils.cpp \
 	ggos.cpp \
 	globals.cpp \
@@ -47,6 +42,11 @@ scanner.cc: scanner.ll
 
 parser.cc: parser.yy
 	$(YACC) -o $@ $< --defines=$(@:.cc=.h)
+parser.h: parser.cc
+	@if test -f $@; then :; else \
+		rm -f -- $<; \
+		$(MAKE) $(AM_MAKEFLAGS) $<; \
+	fi
 
 # these are for gnulib
 AM_CPPFLAGS = -I$(top_srcdir)/gl -I$(top_builddir)/gl
@@ -61,7 +61,7 @@ LDADD = libgengetopt.la
 EXTRA_DIST = \
 	$(pkgdata_DATA) \
 	argsdef.h \
-	cmdline.c \
+	cmdline.ggo \
 	cmdline.h \
 	gengetopt.h \
 	ggo_options.h \
@@ -78,9 +78,8 @@ EXTRA_DIST = \
 # to have flex generate a case insensitive scanner
 AM_LFLAGS = -i
 
-.ggo.c:
+cmdline.c: cmdline.ggo
 	$(GENGETOPT) --input $<
-
 cmdline.h: cmdline.c
 	@if test -f $@; then :; else \
 		rm -f -- $<; \
@@ -91,18 +90,12 @@ BUILT_SOURCES = \
 	cmdline.c \
 	cmdline.h \
 	parser.cc \
+	parser.h \
 	scanner.cc
 
 # we distribute these files because who uses gengetopt might need them
 # these are installed in $(prefix)/share/gengetopt
 pkgdata_DATA = gnugetopt.h getopt.c getopt1.c
-
-# yywrap.c is added only if it is not found on lex (flex) lib, and will be
-# added automatically by automake
-
-# automake (maybe due to a bug) doesn't added these files well,
-# so we explicitely declare them
-MAINTAINERCLEANFILES = scanner.cc parser.h parser.cc 
 
 noinst_HEADERS = \
 	acceptedvalues.h \
