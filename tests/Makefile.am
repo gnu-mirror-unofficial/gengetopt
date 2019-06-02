@@ -417,29 +417,29 @@ TESTSOUT = test.out
 TESTSOUTPUT = test.output
 
 ERRFILES = \
-	wrong_default.err \
-	wrong_dep.err \
-	wrong_enum_use.err \
-	wrong_flag.err \
-	wrong_flag2.err \
-	wrong_group.err \
-	wrong_group2.err \
-	wrong_help_redef.err \
-	wrong_multiple_occurrence.err \
-	wrong_numeric_value.err \
-	wrong_version_redef.err
+	wrong_ggo/wrong_default.err \
+	wrong_ggo/wrong_dep.err \
+	wrong_ggo/wrong_enum_use.err \
+	wrong_ggo/wrong_flag.err \
+	wrong_ggo/wrong_flag2.err \
+	wrong_ggo/wrong_group.err \
+	wrong_ggo/wrong_group2.err \
+	wrong_ggo/wrong_help_redef.err \
+	wrong_ggo/wrong_multiple_occurrence.err \
+	wrong_ggo/wrong_numeric_value.err \
+	wrong_ggo/wrong_version_redef.err
 ERRGGOFILES = \
-	wrong_default.ggo \
-	wrong_dep.ggo \
-	wrong_enum_use.ggo \
-	wrong_flag.ggo \
-	wrong_flag2.ggo \
-	wrong_group.ggo \
-	wrong_group2.ggo \
-	wrong_help_redef.ggo \
-	wrong_multiple_occurrence.ggo \
-	wrong_numeric_value.ggo \
-	wrong_version_redef.ggo
+	wrong_ggo/wrong_default.ggo \
+	wrong_ggo/wrong_dep.ggo \
+	wrong_ggo/wrong_enum_use.ggo \
+	wrong_ggo/wrong_flag.ggo \
+	wrong_ggo/wrong_flag2.ggo \
+	wrong_ggo/wrong_group.ggo \
+	wrong_ggo/wrong_group2.ggo \
+	wrong_ggo/wrong_help_redef.ggo \
+	wrong_ggo/wrong_multiple_occurrence.ggo \
+	wrong_ggo/wrong_numeric_value.ggo \
+	wrong_ggo/wrong_version_redef.ggo
 
 gengetoptexamples_DATA = \
 	test_manual_help.c \
