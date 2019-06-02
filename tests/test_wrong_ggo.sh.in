@@ -9,9 +9,6 @@ builddir=@builddir@
 in_dir="$srcdir/wrong_ggo"
 out_dir="$builddir/wrong_ggo"
 
-if [ -d "$out_dir" ]; then
-	rm -rf -- "$out_dir"
-fi
 mkdir -p -- "$out_dir"
 
 for err in "$in_dir"/*.err; do
